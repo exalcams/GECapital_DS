@@ -5,7 +5,7 @@
 export const environment = {
     production: false,
     hmr       : false,
-    baseAddress : 'http://localhost:4010/',
+    baseAddress : 'http://localhost:4011/',
     clientId : 'ngAuthApp'
 };
 

@@ -247,6 +247,8 @@ export class AdminDashboardComponent implements OnInit {
     this.dashboardService.GetDSSStatusCounts().subscribe((data) => {
       if (data) {
         this.DSSStatusCount = data as DSSStatusCount;
+        console.log(this.DSSStatusCount);
+        console.log(this.DSSStatusCount.SignedDocumnentCount);
       }
       this.IsDSSStatusCountCompleted = true;
     }, (error) => {
