@@ -656,7 +656,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   UpdateConfiguration(DSSConfigurationData: DSSConfiguration): void {
-    // console.log(DSSConfigurationData);
+     console.log(DSSConfigurationData);
     const dialogConfig: MatDialogConfig = {
       data: DSSConfigurationData,
       panelClass: 'config-dialog'

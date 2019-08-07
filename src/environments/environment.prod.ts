@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
     hmr       : false,
-    baseAddress : 'http://192.168.1.11/digitalsignatureService/',
+    baseAddress : 'http://10.177.35.61:8090/v1/',
     clientId : 'ngAuthApp'
 };
