@@ -1,0 +1,54 @@
+<div id="dashboard" class="page-layout simple right-sidebar" fxLayout="row">
+  <div class="center">
+    <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px">
+      <mat-card class="m-12 p-0" style="border-radius: 10px;height: 82vh;" fxLayout>
+        <div fxFlex="40" class="rightBorder role-side-bar">
+          <div class="sidenav-header">
+            <mat-toolbar>
+              <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                  <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input [(ngModel)]="searchText" type="text" placeholder="Search" fxFlex>
+                  </div>
+                </div>
+              </mat-toolbar-row>
+            </mat-toolbar>
+          </div>
+          <div class="sidenav-content" fusePerfectScrollbar fxFlex>
+            <div *fuseIfOnDom [@animateStagger]="{value:'50'}">
+              <div class="chat-list" fxLayout="column">
+                <button mat-button class="contact py-4 px-8"
+                  *ngFor="let doc of AllUnSignedDocuments | filter: searchText" (click)="loadSelectedDocument(doc)"
+                  ngClass="{'unread':contact.unread}" [@animate]="{value:'*',params:{y:'100%'}}"
+                  [style.background-color]="selectID==doc.ID?'lightgrey':'white'">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxLayout="column" fxFlex>
+                      <div class="contact-name">{{doc.INV_NAME}}</div>
+                      <div class="contact-last-message-time">
+                        {{doc.DOCTYPE}}
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+              <div *ngIf="(AllUnSignedDocuments | filter: searchText).length === 0" class="no-results-message">
+                No results..
+              </div>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="60" fxLayout="column">
+          <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
+            <iframe *ngIf="SelectedDocument?.ID" style="width:90vw;height:74vh;" [src]="DSSConfigurationData"></iframe>
+          </div>
+          <div fxLayout="row" class="m-8" fxLayoutAlign="end">
+            <button mat-raised-button type="button" color="accent" (click)="SignClicked()" style="margin-right:10px">
+              Sign
+            </button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

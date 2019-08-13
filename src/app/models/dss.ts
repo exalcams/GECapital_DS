@@ -1,5 +1,9 @@
 export class DSSInvoice {
      ID: number;
+     CONFIG_ID: number;
+     CONFIG1: string;
+     CONFIG2: string;
+     CONFIG3: string;
      CODE: string;
      DOCTYPE: string;
      AREA: string;
@@ -25,7 +29,7 @@ export class ErrorInvoice {
      INVOICE_NAME: string;
      CREATED_ON?: Date;
      COMMENT: string;
-     SIGNED_AUTHORITY:string;
+     SIGNED_AUTHORITY: string;
 }
 export class DSSConfiguration {
      CONFIG_ID: number;
@@ -81,7 +85,7 @@ export class DSSStatusCount {
      ErrorDocumentCount: number;
      ConfigurationCount: number;
      ExpiryCerificateCount: number;
-     UnSignedDocumnentCount:number;
+     UnSignedDocumnentCount: number;
 }
 
 export class CertificateClass {

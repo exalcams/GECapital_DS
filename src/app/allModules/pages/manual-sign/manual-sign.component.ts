@@ -1,0 +1,70 @@
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { DashboardService } from 'app/services/dashboard.service';
+import { DSSInvoice } from 'app/models/dss';
+import { fuseAnimations } from '@fuse/animations';
+import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
+import { MatSnackBar } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
+
+@Component({
+  selector: 'app-manual-sign',
+  templateUrl: './manual-sign.component.html',
+  styleUrls: ['./manual-sign.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: fuseAnimations
+})
+export class ManualSignComponent implements OnInit {
+  searchText: string;
+  AllUnSignedDocuments: DSSInvoice[] = [];
+  selectID: number;
+  SelectedDocument: DSSInvoice;
+  DSSConfigurationData: any;
+  notificationSnackBarComponent: NotificationSnackBarComponent;
+  IsProgressBarVisibile: boolean;
+  constructor(
+    private _dashboardService: DashboardService,
+    public snackBar: MatSnackBar,
+    private sanitizer: DomSanitizer
+  ) {
+    this.searchText = '';
+    this.SelectedDocument = new DSSInvoice();
+    this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
+    this.IsProgressBarVisibile = false;
+  }
+
+  ngOnInit(): void {
+    this.GetAllUnSignedDocuments();
+  }
+
+  GetAllUnSignedDocuments(): void {
+    this._dashboardService.GetAllUnSignedDocument().subscribe(
+      (data) => {
+        this.AllUnSignedDocuments = data as DSSInvoice[];
+      },
+      (err) => {
+
+      }
+    );
+  }
+  loadSelectedDocument(SelectedDoc: DSSInvoice): void {
+    this.selectID = SelectedDoc.ID;
+    this.SelectedDocument = SelectedDoc;
+    this.ViewPdfFromID(this.SelectedDocument.ID, this.SelectedDocument.INVOICE_NAME);
+  }
+  ViewPdfFromID(ID: number, fileName: string): void {
+    this.IsProgressBarVisibile = true;
+    this._dashboardService.DowloandPdfFromID(ID).subscribe(
+      data => {
+        const file = new Blob([data], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        this.DSSConfigurationData = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+        this.IsProgressBarVisibile = false;
+      },
+      error => {
+        console.error(error);
+        this.IsProgressBarVisibile = false;
+      }
+    );
+  }
+
+}

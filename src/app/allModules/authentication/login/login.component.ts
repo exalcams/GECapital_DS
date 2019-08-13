@@ -228,6 +228,18 @@ export class LoginComponent implements OnInit {
         }
       );
     }
+    if (true) {
+      this.children.push(
+        {
+          id: 'manualSign',
+          title: 'Manual Sign',
+          translate: 'NAV.SAMPLE.TITLE',
+          type: 'item',
+          icon: 'dashboard',
+          url: '/pages/manualSign',
+        }
+      );
+    }
 
     if (this.MenuItems.indexOf('App') >= 0) {
       this.subChildren.push(
