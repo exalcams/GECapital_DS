@@ -61,6 +61,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ConfigUserUpdateDialogComponent } from './config-user-update-dialog/config-user-update-dialog.component';
+import { ManualSignComponent } from './manual-sign/manual-sign.component';
 
 const routes = [
     {
@@ -70,6 +71,10 @@ const routes = [
     {
         path: 'dashboard',
         component: DashboardComponent
+    },
+    {
+        path: 'manualSign',
+        component: ManualSignComponent
     },
     {
         path: '**',
@@ -131,7 +136,7 @@ const routes = [
         FormsModule,
         PdfViewerModule
     ],
-    declarations: [DashboardComponent, DialogComponent, PdfDialogComponent, AdminDashboardComponent, ConfigUserUpdateDialogComponent],
+    declarations: [DashboardComponent, DialogComponent, PdfDialogComponent, AdminDashboardComponent, ConfigUserUpdateDialogComponent, ManualSignComponent],
     providers: [DashboardService],
     entryComponents: [
         DialogComponent,
