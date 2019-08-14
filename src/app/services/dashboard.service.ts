@@ -88,6 +88,7 @@ export class DashboardService {
     return this._httpClient.get<DSSInvoice[]>(`${this.baseUrl}api/ESigner/GetAllUnSignedDocuments`)
       .pipe(catchError(this.errorHandler));
   }
+  
   //  GetAllInvoicesBasedOnDate(DocumentTypeName: string, FROMDATE: string, TODATE: string): Observable<DSSInvoice[] | string> {
   GetAllInvoicesBasedOnDate(getDocument: GetDocument): Observable<DSSInvoice[] | string> {
     return this._httpClient.post<DSSInvoice[]>(`${this.baseUrl}api/ESigner/GetAllInvoicesBasedOnDate`,
@@ -110,8 +111,8 @@ export class DashboardService {
       })
       .pipe(catchError(this.errorHandler));
   }
-  
-  
+
+
   GetAllExpiredCertificates(): Observable<DSSConfiguration[] | string> {
     return this._httpClient.get<DSSConfiguration[]>(`${this.baseUrl}api/ESigner/GetAllExpiredCertificates`)
       .pipe(catchError(this.errorHandler));
@@ -260,6 +261,11 @@ export class DashboardService {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     })
+      .pipe(catchError(this.errorHandler));
+  }
+
+  ManualSignProcessUsingCert(ID: number, Filename: string, UserID: number): Observable<any> {
+    return this._httpClient.get<any>(`${this.baseUrl}api/ESigner/ManualSignProcessUsingCert?ID=${ID}&Filename=${Filename}&UserID=${UserID}`)
       .pipe(catchError(this.errorHandler));
   }
 

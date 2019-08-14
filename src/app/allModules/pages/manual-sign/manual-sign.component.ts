@@ -5,6 +5,9 @@ import { fuseAnimations } from '@fuse/animations';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { MatSnackBar } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AuthenticationDetails } from 'app/models/master';
+import { Router } from '@angular/router';
+import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 
 @Component({
   selector: 'app-manual-sign',
@@ -14,6 +17,10 @@ import { DomSanitizer } from '@angular/platform-browser';
   animations: fuseAnimations
 })
 export class ManualSignComponent implements OnInit {
+  authenticationDetails: AuthenticationDetails;
+  MenuItems: string[];
+  UserName: string;
+  UserID: number;
   searchText: string;
   AllUnSignedDocuments: DSSInvoice[] = [];
   selectID: number;
@@ -24,8 +31,10 @@ export class ManualSignComponent implements OnInit {
   constructor(
     private _dashboardService: DashboardService,
     public snackBar: MatSnackBar,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private _router: Router
   ) {
+    this.authenticationDetails = new AuthenticationDetails();
     this.searchText = '';
     this.SelectedDocument = new DSSInvoice();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -33,16 +42,50 @@ export class ManualSignComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.GetAllUnSignedDocuments();
+    const retrievedObject = localStorage.getItem('authorizationData');
+    if (retrievedObject) {
+      this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
+      this.UserName = this.authenticationDetails.userName;
+      this.UserID = this.authenticationDetails.userID;
+      this.MenuItems = this.authenticationDetails.menuItemNames.split(',');
+      if (this.MenuItems.indexOf('ManualSign') < 0) {
+        this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger);
+        this._router.navigate(['/auth/login']);
+      }
+    } else {
+      this._router.navigate(['/auth/login']);
+    }
+    if (this.authenticationDetails.userRole === 'Administrator') {
+      this.GetAllUnSignedDocuments();
+    } else {
+      this.GetAllUnSignedDocumentsByUser();
+    }
+
   }
 
   GetAllUnSignedDocuments(): void {
+    this.IsProgressBarVisibile = true;
     this._dashboardService.GetAllUnSignedDocument().subscribe(
       (data) => {
         this.AllUnSignedDocuments = data as DSSInvoice[];
+        this.IsProgressBarVisibile = false;
       },
       (err) => {
-
+        console.error(err);
+        this.IsProgressBarVisibile = false;
+      }
+    );
+  }
+  GetAllUnSignedDocumentsByUser(): void {
+    this.IsProgressBarVisibile = true;
+    this._dashboardService.GetAllUnSignedDocumentsByUser(this.UserName).subscribe(
+      (data) => {
+        this.AllUnSignedDocuments = data as DSSInvoice[];
+        this.IsProgressBarVisibile = false;
+      },
+      (err) => {
+        console.error(err);
+        this.IsProgressBarVisibile = false;
       }
     );
   }
@@ -65,6 +108,19 @@ export class ManualSignComponent implements OnInit {
         this.IsProgressBarVisibile = false;
       }
     );
+  }
+
+  SignClicked(): void {
+    this.IsProgressBarVisibile = true;
+    this._dashboardService.ManualSignProcessUsingCert(this.SelectedDocument.ID, this.SelectedDocument.INVOICE_NAME, this.UserID).
+      subscribe((data) => {
+        this.IsProgressBarVisibile = false;
+      },
+        (err) => {
+          console.error(err);
+          this.IsProgressBarVisibile = false;
+        });
+
   }
 
 }

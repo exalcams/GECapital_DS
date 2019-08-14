@@ -228,7 +228,7 @@ export class LoginComponent implements OnInit {
         }
       );
     }
-    if (true) {
+    if (this.MenuItems.indexOf('ManualSign') >= 0) {
       this.children.push(
         {
           id: 'manualSign',
