@@ -65,16 +65,16 @@ export class AdminDashboardComponent implements OnInit {
   dialogRef: any;
 
   SignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
-  UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
+//  UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
   ConfigurationsDataSource: MatTableDataSource<DSSConfiguration>;
   ExpiredCertificatesDataSource: MatTableDataSource<DSSConfiguration>;
   ErrorDocumentsDataSource: MatTableDataSource<DSSErrorInvoice>;
   SignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'SIGNED_AUTHORITY', 'SIGNED_ON', 'View', 'Download'];
-  UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA','SIGNED_AUTHORITY', 'AUTOSIGNED', 'View', 'Download'];
+ // UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA','SIGNED_AUTHORITY', 'AUTOSIGNED', 'View', 'Download'];
   // tslint:disable-next-line:max-line-length
-  ConfigurationsColumns: string[] = ['CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'AUTHORITY', 'AUTOSIGN', 'DISPLAYTITLE1', 'DISPLAYTITLE2', 'CREATED_ON', 'Edit', 'Delete'];
+  ConfigurationsColumns: string[] = ['DOCTYPE','CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'AUTHORITY1', 'AUTHORITY2', 'AUTHORITY3', 'AUTOSIGN','CREATED_ON', 'Edit', 'Delete'];
   // tslint:disable-next-line:max-line-length
-  ExpiredCertificatesColumns: string[] = ['CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'AUTHORITY', 'AUTOSIGN', 'DISPLAYTITLE1', 'DISPLAYTITLE2', 'CERT_EX_DT', 'Edit', 'Delete'];
+  ExpiredCertificatesColumns: string[] = ['DOCTYPE','CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'AUTHORITY1', 'AUTHORITY2', 'AUTHORITY3', 'AUTOSIGN','CERT_EX_DT', 'Edit', 'Delete'];
   ErrorDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'SIGNED_AUTHORITY', 'CREATED_ON', 'Comment', 'View', 'Download'];
 
   @ViewChild(MatPaginator) SignDocumentsPaginator: MatPaginator;
@@ -154,7 +154,7 @@ export class AdminDashboardComponent implements OnInit {
       } else {
         this.GetDSSStatusCounts();
         this.GetAllSignedDocument();
-        this.GetAllUnSignedDocument();
+       // this.GetAllUnSignedDocument();
         this.GetAllConfigurations();
         this.GetAllErrorDocuments();
         this.GetAllExpiredCertificates();
@@ -222,15 +222,15 @@ export class AdminDashboardComponent implements OnInit {
     this.GetAllErrorDocuments();
     this.ResetControl();
   }
-  tabfive() {
-    this.tab1 = false;
-    this.tab2 = false;
-    this.tab3 = false;
-    this.tab4 = false;
-    this.tab5 = true;
-    this.GetAllUnSignedDocument();
-    this.ResetControl();
-  }
+  // tabfive() {
+  //   this.tab1 = false;
+  //   this.tab2 = false;
+  //   this.tab3 = false;
+  //   this.tab4 = false;
+  //   this.tab5 = true;
+  //   this.GetAllUnSignedDocument();
+  //   this.ResetControl();
+  // }
   ResetControl(): void {
     this.getDocument = new GetDocument();
     this.documentFormGroup.reset();
@@ -247,8 +247,8 @@ export class AdminDashboardComponent implements OnInit {
     this.dashboardService.GetDSSStatusCounts().subscribe((data) => {
       if (data) {
         this.DSSStatusCount = data as DSSStatusCount;
-        console.log(this.DSSStatusCount);
-        console.log(this.DSSStatusCount.SignedDocumnentCount);
+        // console.log(this.DSSStatusCount);
+        // console.log(this.DSSStatusCount.SignedDocumnentCount);
       }
       this.IsDSSStatusCountCompleted = true;
     }, (error) => {
@@ -278,28 +278,28 @@ export class AdminDashboardComponent implements OnInit {
           this.IsProgressBarVisibile = false;
         });
   }
-  GetAllUnSignedDocument(): void {
-    // alert("hi");
-    this.IsProgressBarVisibile = true;
-    this.dashboardService
-      .GetAllUnSignedDocument()
-      .subscribe((data) => {
-        if (data) {
-          this.AllUnSignedDocument = <DSSInvoice[]>data;
-          this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
-          this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
-          this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
-          this.DSSStatusCount.UnSignedDocumnentCount = this.AllUnSignedDocument.length;
-        }
-        this.IsAllUnSignedDocumentCompleted = true;
-        this.IsProgressBarVisibile = false;
-      },
-        (err) => {
-          console.error(err);
-          this.IsAllUnSignedDocumentCompleted = true;
-          this.IsProgressBarVisibile = false;
-        });
-  }
+  // GetAllUnSignedDocument(): void {
+  //   // alert("hi");
+  //   this.IsProgressBarVisibile = true;
+  //   this.dashboardService
+  //     .GetAllUnSignedDocument()
+  //     .subscribe((data) => {
+  //       if (data) {
+  //         this.AllUnSignedDocument = <DSSInvoice[]>data;
+  //         this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
+  //         this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
+  //         this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
+  //         this.DSSStatusCount.UnSignedDocumnentCount = this.AllUnSignedDocument.length;
+  //       }
+  //       this.IsAllUnSignedDocumentCompleted = true;
+  //       this.IsProgressBarVisibile = false;
+  //     },
+  //       (err) => {
+  //         console.error(err);
+  //         this.IsAllUnSignedDocumentCompleted = true;
+  //         this.IsProgressBarVisibile = false;
+  //       });
+  // }
   GetAllConfigurations(): void {
     this.IsProgressBarVisibile = true;
     this.dashboardService
@@ -307,6 +307,7 @@ export class AdminDashboardComponent implements OnInit {
       .subscribe((data) => {
         if (data) {
           this.AllConfigurations = <DSSConfiguration[]>data;
+          // console.log(this.AllConfigurations);
           this.ConfigurationsDataSource = new MatTableDataSource(this.AllConfigurations);
           this.ConfigurationsDataSource.paginator = this.ConfigurationsPaginator;
           this.ConfigurationsDataSource.sort = this.ConfigurationsSort;
@@ -556,35 +557,35 @@ export class AdminDashboardComponent implements OnInit {
       this.documentFormGroup.get(key).markAsDirty();
     });
   }
-  GetAllUnsignedInvoicesBasedOnDate(): void {
-    if (this.documentFormGroup.valid) {
-      if (!this.isDateError && !this.isInvoiceError) {
-        this.IsProgressBarVisibile = true;
-        this.getDocument = new GetDocument();
-        this.getDocument.DocumentType = this.documentFormGroup.get('DocumentType').value;
-        this.getDocument.FromDate = this.datePipe.transform(this.documentFormGroup.get('FromDate').value as Date, 'yyyy-MM-dd');
-        this.getDocument.ToDate = this.datePipe.transform(this.documentFormGroup.get('ToDate').value as Date, 'yyyy-MM-dd');
-        this.dashboardService.GetAllUnSignedInvoicesBasedOnDate(this.getDocument)
-          .subscribe((data) => {
-            this.AllUnSignedDocument = <DSSInvoice[]>data;
-            this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
-            this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
-            this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
-            this.IsProgressBarVisibile = false;
-          },
-            (err) => {
-              console.error(err);
-              this.IsProgressBarVisibile = false;
-              this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
-            });
-      }
+  // GetAllUnsignedInvoicesBasedOnDate(): void {
+  //   if (this.documentFormGroup.valid) {
+  //     if (!this.isDateError && !this.isInvoiceError) {
+  //       this.IsProgressBarVisibile = true;
+  //       this.getDocument = new GetDocument();
+  //       this.getDocument.DocumentType = this.documentFormGroup.get('DocumentType').value;
+  //       this.getDocument.FromDate = this.datePipe.transform(this.documentFormGroup.get('FromDate').value as Date, 'yyyy-MM-dd');
+  //       this.getDocument.ToDate = this.datePipe.transform(this.documentFormGroup.get('ToDate').value as Date, 'yyyy-MM-dd');
+  //       this.dashboardService.GetAllUnSignedInvoicesBasedOnDate(this.getDocument)
+  //         .subscribe((data) => {
+  //           this.AllUnSignedDocument = <DSSInvoice[]>data;
+  //           this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
+  //           this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
+  //           this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
+  //           this.IsProgressBarVisibile = false;
+  //         },
+  //           (err) => {
+  //             console.error(err);
+  //             this.IsProgressBarVisibile = false;
+  //             this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+  //           });
+  //     }
 
-    }
-    Object.keys(this.documentFormGroup.controls).forEach(key => {
-      this.documentFormGroup.get(key).markAsTouched();
-      this.documentFormGroup.get(key).markAsDirty();
-    });
-  }
+  //   }
+  //   Object.keys(this.documentFormGroup.controls).forEach(key => {
+  //     this.documentFormGroup.get(key).markAsTouched();
+  //     this.documentFormGroup.get(key).markAsDirty();
+  //   });
+  // }
   DowloandPdfFromID(ID: number, fileName: string): void {
     this.IsProgressBarVisibile = true;
     this.dashboardService.DowloandPdfFromID(ID).subscribe(
@@ -656,7 +657,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   UpdateConfiguration(DSSConfigurationData: DSSConfiguration): void {
-     console.log(DSSConfigurationData);
+    // console.log(DSSConfigurationData);
     const dialogConfig: MatDialogConfig = {
       data: DSSConfigurationData,
       panelClass: 'config-dialog'
@@ -724,14 +725,14 @@ export class AdminDashboardComponent implements OnInit {
     }
 
   }
-  applyFilterUnSign(filterValue: string): void {
-    this.UnSignDocumentsDataSource.filter = filterValue.trim().toLowerCase();
+  // applyFilterUnSign(filterValue: string): void {
+  //   this.UnSignDocumentsDataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.UnSignDocumentsDataSource.paginator) {
-      this.UnSignDocumentsDataSource.paginator.firstPage();
-    }
+  //   if (this.UnSignDocumentsDataSource.paginator) {
+  //     this.UnSignDocumentsDataSource.paginator.firstPage();
+  //   }
 
-  }
+  // }
   applyFilterExp(filterValue: string): void {
     this.ExpiredCertificatesDataSource.filter = filterValue.trim().toLowerCase();
 

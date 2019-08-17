@@ -40,7 +40,9 @@ export class DSSConfiguration {
      AUTOSIGN: boolean;
      CERT_NAME: string;
      CERT_EX_DT: Date;
-     AUTHORITY: string;
+     AUTHORITY1: string;
+     AUTHORITY2: string;
+     AUTHORITY3: string;
      DISPLAYTITLE1: string;
      DISPLAYTITLE2: string;
      CONFIG1: string;
