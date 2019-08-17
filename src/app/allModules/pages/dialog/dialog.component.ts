@@ -16,14 +16,17 @@ import { PlantView, DocumentTypeView, OutputTypeView } from 'app/models/master';
 export class DialogComponent implements OnInit {
     showExtraToFields: boolean;
     ConfigurationFormGroup: FormGroup;
-    // AllDocumentTypeNames: string[] = [];
-    AllOutputTypes: OutputTypeView[] = [];
+    AllDocumentTypeNames: string[] = [];
+    SelectedDocumetType: string;
+    // AllOutputTypes: OutputTypeView[] = [];
     AllUserEmails: string[] = [];
-    AllPlants: PlantView[] = [];
-    AllFilteredPlants: PlantView[] = [];
-    // AllDocumentTypes: DocumentTypeView[] = [];
-    // AllFilteredDocumentTypes: DocumentTypeView[] = [];
+    // AllPlants: PlantView[] = [];
+    // AllFilteredPlants: PlantView[] = [];
+    AllDocumentTypes: DocumentTypeView[] = [];
+    AllFilteredDocumentTypes: DocumentTypeView[] = [];
     AllAuthority: AuthorityClass[] = [];
+    AllAuthority1: AuthorityClass[] = [];
+    AllAuthority2: AuthorityClass[] = [];
     AllUsersByPlant: UserByPlant[] = [];
     AllFilteredUsersByPlant: UserByPlant[] = [];
     AllCertificates: CertificateClass[] = [];
@@ -37,7 +40,7 @@ export class DialogComponent implements OnInit {
     ) {
         // Set the defaults
         this.ConfigurationFormGroup = this.formBuilder.group({
-            //DocumentType: ['', Validators.required],
+            DocumentType: ['', Validators.required],
             //Plant: ['', Validators.required],
             // DocumentType: ['', Validators.required],
             // OutputType: ['', Validators.required],
@@ -45,7 +48,9 @@ export class DialogComponent implements OnInit {
             Config1: ['', Validators.required],
             Config2: ['', Validators.required],
             Config3: ['', Validators.required],
-            Authority: ['', Validators.required],
+            Authority1: ['', Validators.required],
+            Authority2: ['', Validators.required],
+            Authority3: ['', Validators.required],
             // Priority1User: ['', Validators.required],
             // Priority2User: [''],
             // Priority3User: [''],
@@ -54,8 +59,8 @@ export class DialogComponent implements OnInit {
             // SignedAuthority: ['', Validators.required],
             CertificateName: ['', Validators.required],
             ExpiryDate: ['', Validators.required],
-            DisplayTitle1: ['', Validators.required],
-            DisplayTitle2: [''],
+            // DisplayTitle1: ['', Validators.required],
+            // DisplayTitle2: [''],
         });
         // this.CurrentDSSConfiguration = new DSSConfiguration();
         this.showExtraToFields = false;
@@ -68,37 +73,40 @@ export class DialogComponent implements OnInit {
 
     }
     ngOnInit(): void {
-        // this.GetAllDocumentTypeNames();
-        // this.GetAllOutputTypeNames();
+        console.log(this.SelectedDocumetType);
+        this.GetAllDocumentTypeNames();
+        //  this.GetAllOutputTypeNames();
         // this.GetAllUserEmails();
         //this.GetAllPlants();
-        // this.GetAllDocumentTypes();
+        this.GetAllDocumentTypes();
         // this.GetAllUsersByPlant();
         this.GetAllCertificateFromStore();
         this.GetAllAuthoritys();
-        console.log(this.GetAllAuthoritys);
         if (this.DSSConfigurationData) {
+            console.log(this.DSSConfigurationData);
             this.ConfigurationFormGroup.setValue({
-                // DocumentType: this.DSSConfigurationData.DOCTYPE,
+                DocumentType: this.DSSConfigurationData.DOCTYPE,
                 // Plant: this.DSSConfigurationData.Plant_ID,
                 // DocumentType: this.DSSConfigurationData.CONFIG2,
                 // OutputType: this.DSSConfigurationData.CONFIG3,
                 AutoSign: this.DSSConfigurationData.AUTOSIGN,
                 // SignedAuthority: this.DSSConfigurationData.AUTHORITY,
-                Config1:this.DSSConfigurationData.CONFIG1,
-                Config2:this.DSSConfigurationData.CONFIG2,
-                Config3:this.DSSConfigurationData.CONFIG3,
-                Authority:this.DSSConfigurationData.AUTHORITY,
+                Config1: this.DSSConfigurationData.CONFIG1,
+                Config2: this.DSSConfigurationData.CONFIG2,
+                Config3: this.DSSConfigurationData.CONFIG3,
+                Authority1: this.DSSConfigurationData.AUTHORITY1,
+                Authority2: this.DSSConfigurationData.AUTHORITY2,
+                Authority3: this.DSSConfigurationData.AUTHORITY3,
                 CertificateName: this.DSSConfigurationData.CERT_NAME,
-                ExpiryDate: this.DSSConfigurationData.CERT_EX_DT,
+                ExpiryDate: this.DSSConfigurationData.CERT_EX_DT
                 // Priority1User: this.DSSConfigurationData.PRIORITY1_USER,
                 // Priority2User: this.DSSConfigurationData.PRIORITY2_USER,
                 // Priority3User: this.DSSConfigurationData.PRIORITY3_USER,
                 // Priority4User: this.DSSConfigurationData.PRIORITY4_USER,
                 // Priority5User: this.DSSConfigurationData.PRIORITY5_USER,
                 // DisplayTitle1: this.DSSConfigurationData.DISPLAYTITLE1,
-                DisplayTitle1:this.DSSConfigurationData.DISPLAYTITLE1,
-                DisplayTitle2: this.DSSConfigurationData.DISPLAYTITLE2
+                // DisplayTitle1: this.DSSConfigurationData.DISPLAYTITLE1,
+                // DisplayTitle2: this.DSSConfigurationData.DISPLAYTITLE2
             });
             // console.log(this.DSSConfigurationData);
             //this.DisableMatOptions();
@@ -122,38 +130,41 @@ export class DialogComponent implements OnInit {
             }
         );
     }
-
-    // GetAllDocumentTypeNames(): void {
-    //     this.masterService.GetAllDocumentTypeNames().subscribe((data) => {
-    //         if (data) {
-    //             this.AllDocumentTypeNames = <string[]>data;
-    //         }
-    //     },
-    //         (err) => {
-    //             console.log(err);
-    //         });
-    // }
-    GetAllOutputTypeNames(): void {
-        this.masterService.GetAllOutputTypeViews().subscribe((data) => {
+    GetDocumentType(documentType: string): void {
+        //this.ConfigurationFormGroup.setValue({ DocumentType: documentType });
+        this.ConfigurationFormGroup.controls['Config3'].setValue(documentType);
+    }
+    GetAllDocumentTypeNames(): void {
+        this.masterService.GetAllDocumentTypeNames().subscribe((data) => {
             if (data) {
-                this.AllOutputTypes = <OutputTypeView[]>data;
+                this.AllDocumentTypeNames = <string[]>data;
             }
         },
             (err) => {
-                console.error(err);
+                console.log(err);
             });
     }
-    // GetAllDocumentTypes(): void {
-    //     this.masterService.GetAllDocumentTypeViews().subscribe(
-    //         (data) => {
-    //             this.AllDocumentTypes = data as DocumentTypeView[];
-    //             this.AllFilteredDocumentTypes = this.AllDocumentTypes;
-    //         },
+    // GetAllOutputTypeNames(): void {
+    //     this.masterService.GetAllOutputTypeViews().subscribe((data) => {
+    //         if (data) {
+    //             this.AllOutputTypes = <OutputTypeView[]>data;
+    //         }
+    //     },
     //         (err) => {
     //             console.error(err);
-    //         }
-    //     );
+    //         });
     // }
+    GetAllDocumentTypes(): void {
+        this.masterService.GetAllDocumentTypeViews().subscribe(
+            (data) => {
+                this.AllDocumentTypes = data as DocumentTypeView[];
+                this.AllFilteredDocumentTypes = this.AllDocumentTypes;
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
     // GetAllPlants(): void {
     //     this.masterService.GetAllPlantViews().subscribe(
     //         (data) => {
@@ -230,14 +241,33 @@ export class DialogComponent implements OnInit {
     //         this.ConfigurationFormGroup.get('DisplayTitle1').patchValue('');
     //     }
     // }
-    SignedAuthoritySelected(SignedAuthority: string): void {
-        console.log(SignedAuthority);
-        const res = this.AllAuthority.filter(x => x.UserName === SignedAuthority)[0];
+    SignedAuthority1Selected(SignedAuthority: string): void {
+        // console.log(SignedAuthority);
+        const res = this.AllAuthority.filter(x => x.UserName !== SignedAuthority);
+        console.log(res);
+        // alert(SignedAuthority);
         if (res) {
-            // this.ConfigurationFormGroup.get('DisplayTitle1').patchValue(res.DisplayTitle);
-            // this.ConfigurationFormGroup.get('DisplayTitle1').patchValue('');
+            this.AllAuthority1 = <AuthorityClass[]>res;
         }
     }
+    SignedAuthority2Selected(SignedAuthority: string): void {
+        // console.log(SignedAuthority);
+        const res = this.AllAuthority1.filter(x => x.UserName !== SignedAuthority);
+        console.log(res);
+        // alert(SignedAuthority);
+        if (res) {
+            this.AllAuthority2 = <AuthorityClass[]>res;
+        }
+    }
+    //  SignedAuthority3Selected(SignedAuthority: string): void {
+    //     // console.log(SignedAuthority);
+    //      const res = this.AllAuthority.filter(x => x.UserName !== SignedAuthority);
+    //      console.log(res);
+    //      // alert(SignedAuthority);
+    //      if (res) {
+    //          this.AllAuthority3 = <AuthorityClass[]>res;
+    //      }
+    //  }
     Priority1UserSelected(Priority1User: string): void {
         // console.log('Called');
         // if (Priority1User) {
@@ -350,24 +380,26 @@ export class DialogComponent implements OnInit {
 
     YesClicked(): void {
         if (this.ConfigurationFormGroup.valid) {
-            // this.DSSConfigurationData.DOCTYPE = this.ConfigurationFormGroup.get('DocumentType').value;
+            this.DSSConfigurationData.DOCTYPE = this.ConfigurationFormGroup.get('DocumentType').value;
             // this.DSSConfigurationData.Plant_ID = this.ConfigurationFormGroup.get('Plant').value;
             this.DSSConfigurationData.CONFIG1 = this.ConfigurationFormGroup.get('Config1').value;
             this.DSSConfigurationData.CONFIG2 = this.ConfigurationFormGroup.get('Config2').value;
             this.DSSConfigurationData.CONFIG3 = this.ConfigurationFormGroup.get('Config3').value;
-             this.DSSConfigurationData.AUTOSIGN =this.ConfigurationFormGroup.get('AutoSign').value==0?false:true ;
+            this.DSSConfigurationData.AUTOSIGN = this.ConfigurationFormGroup.get('AutoSign').value == 0 ? false : true;
             // this.DSSConfigurationData.AUTHORITY = this.ConfigurationFormGroup.get('SignedAuthority').value;
             this.DSSConfigurationData.CERT_NAME = this.ConfigurationFormGroup.get('CertificateName').value;
             this.DSSConfigurationData.CERT_EX_DT = this.ConfigurationFormGroup.get('ExpiryDate').value;
-            this.DSSConfigurationData.AUTHORITY=this.ConfigurationFormGroup.get('Authority').value;
+            this.DSSConfigurationData.AUTHORITY1 = this.ConfigurationFormGroup.get('Authority1').value;
+            this.DSSConfigurationData.AUTHORITY2 = this.ConfigurationFormGroup.get('Authority2').value;
+            this.DSSConfigurationData.AUTHORITY3 = this.ConfigurationFormGroup.get('Authority3').value;
             // this.DSSConfigurationData.PRIORITY1_USER = this.ConfigurationFormGroup.get('Priority1User').value;
             // this.DSSConfigurationData.PRIORITY2_USER = this.ConfigurationFormGroup.get('Priority2User').value;
             // this.DSSConfigurationData.PRIORITY3_USER = this.ConfigurationFormGroup.get('Priority3User').value;
             // this.DSSConfigurationData.PRIORITY4_USER = this.ConfigurationFormGroup.get('Priority4User').value;
             // this.DSSConfigurationData.PRIORITY5_USER = this.ConfigurationFormGroup.get('Priority5User').value;
             // this.DSSConfigurationData.DISPLAYTITLE1 = this.ConfigurationFormGroup.get('DisplayTitle1').value;
-            this.DSSConfigurationData.DISPLAYTITLE1 = this.ConfigurationFormGroup.get('DisplayTitle1').value;
-            this.DSSConfigurationData.DISPLAYTITLE2 = this.ConfigurationFormGroup.get('DisplayTitle2').value;
+            // this.DSSConfigurationData.DISPLAYTITLE1 = this.ConfigurationFormGroup.get('DisplayTitle1').value;
+            // this.DSSConfigurationData.DISPLAYTITLE2 = this.ConfigurationFormGroup.get('DisplayTitle2').value;
             this.matDialogRef.close(this.DSSConfigurationData);
         } else {
             Object.keys(this.ConfigurationFormGroup.controls).forEach(key => {

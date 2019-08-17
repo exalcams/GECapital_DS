@@ -67,13 +67,13 @@ export class DashboardComponent implements OnInit {
   dialogRef: any;
 
   SignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
-  UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
+ // UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
   ConfigurationsDataSource: MatTableDataSource<DSSConfiguration>;
   ExpiredCertificatesDataSource: MatTableDataSource<DSSConfiguration>;
   ErrorDocumentsDataSource: MatTableDataSource<DSSErrorInvoice>;
   SignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'SIGNED_AUTHORITY', 'SIGNED_ON', 'View', 'Download'];
   // tslint:disable-next-line:max-line-length
-  UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'AUTOSIGNED', 'View', 'Download'];
+//  UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'AUTOSIGNED', 'View', 'Download'];
   ConfigurationsColumns: string[] = ['CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'DISPLAYTITLE1', 'DISPLAYTITLE2', 'CREATED_ON'];
   // tslint:disable-next-line:max-line-length
   ExpiredCertificatesColumns: string[] = ['CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'DISPLAYTITLE1', 'DISPLAYTITLE2', 'CERT_EX_DT'];
@@ -233,15 +233,15 @@ export class DashboardComponent implements OnInit {
     this.GetAllErrorDocumentsByUser(this.UserName);
     this.ResetControl();
   }
-  tabfive(): void {
-    this.tab1 = false;
-    this.tab2 = false;
-    this.tab3 = false;
-    this.tab4 = false;
-    this.tab5 = true;
-    this.GetAllUnSignedDocumentsByUser(this.UserName);
-    this.ResetControl();
-  }
+  // tabfive(): void {
+  //   this.tab1 = false;
+  //   this.tab2 = false;
+  //   this.tab3 = false;
+  //   this.tab4 = false;
+  //   this.tab5 = true;
+  //   this.GetAllUnSignedDocumentsByUser(this.UserName);
+  //   this.ResetControl();
+  // }
 
   ResetControl(): void {
     this.getDocument = new GetDocument();
@@ -289,27 +289,27 @@ export class DashboardComponent implements OnInit {
         });
   }
 
-  GetAllUnSignedDocumentsByUser(UserName: string): void {
-    this.IsProgressBarVisibile = true;
-    this.dashboardService
-      .GetAllUnSignedDocumentsByUser(UserName)
-      .subscribe((data) => {
-        if (data) {
-          this.AllUnSignedDocument = <DSSInvoice[]>data;
-          this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
-          this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
-          this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
-          this.DSSStatusCount.UnSignedDocumnentCount = this.AllUnSignedDocument.length;
-        }
-        this.IsAllSignedDocumentCompleted = true;
-        this.IsProgressBarVisibile = false;
-      },
-        (err) => {
-          console.error(err);
-          this.IsAllSignedDocumentCompleted = true;
-          this.IsProgressBarVisibile = false;
-        });
-  }
+  // GetAllUnSignedDocumentsByUser(UserName: string): void {
+  //   this.IsProgressBarVisibile = true;
+  //   this.dashboardService
+  //     .GetAllUnSignedDocumentsByUser(UserName)
+  //     .subscribe((data) => {
+  //       if (data) {
+  //         this.AllUnSignedDocument = <DSSInvoice[]>data;
+  //         this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
+  //         this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
+  //         this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
+  //         this.DSSStatusCount.UnSignedDocumnentCount = this.AllUnSignedDocument.length;
+  //       }
+  //       this.IsAllSignedDocumentCompleted = true;
+  //       this.IsProgressBarVisibile = false;
+  //     },
+  //       (err) => {
+  //         console.error(err);
+  //         this.IsAllSignedDocumentCompleted = true;
+  //         this.IsProgressBarVisibile = false;
+  //       });
+  // }
 
 
   GetAllConfigurationsByUser(UserName: string): void {
@@ -571,36 +571,36 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  GetAllUnsignedInvoicesBasedOnDate(): void {
-    if (this.documentFormGroup.valid) {
-      if (!this.isDateError && !this.isInvoiceError) {
-        this.IsProgressBarVisibile = true;
-        this.getDocument = new GetDocument();
-        this.getDocument.DocumentType = this.documentFormGroup.get('DocumentType').value;
-        this.getDocument.FromDate = this.datePipe.transform(this.documentFormGroup.get('FromDate').value as Date, 'yyyy-MM-dd');
-        this.getDocument.ToDate = this.datePipe.transform(this.documentFormGroup.get('ToDate').value as Date, 'yyyy-MM-dd');
-        this.getDocument.UserName = this.UserName;
-        this.dashboardService.GetAllUnSignedInvoicesBasedOnDateByUser(this.getDocument)
-          .subscribe((data) => {
-            this.AllUnSignedDocument = <DSSInvoice[]>data;
-            this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
-            this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
-            this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
-            this.IsProgressBarVisibile = false;
-          },
-            (err) => {
-              console.error(err);
-              this.IsProgressBarVisibile = false;
-              this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
-            });
-      }
+  // GetAllUnsignedInvoicesBasedOnDate(): void {
+  //   if (this.documentFormGroup.valid) {
+  //     if (!this.isDateError && !this.isInvoiceError) {
+  //       this.IsProgressBarVisibile = true;
+  //       this.getDocument = new GetDocument();
+  //       this.getDocument.DocumentType = this.documentFormGroup.get('DocumentType').value;
+  //       this.getDocument.FromDate = this.datePipe.transform(this.documentFormGroup.get('FromDate').value as Date, 'yyyy-MM-dd');
+  //       this.getDocument.ToDate = this.datePipe.transform(this.documentFormGroup.get('ToDate').value as Date, 'yyyy-MM-dd');
+  //       this.getDocument.UserName = this.UserName;
+  //       this.dashboardService.GetAllUnSignedInvoicesBasedOnDateByUser(this.getDocument)
+  //         .subscribe((data) => {
+  //           this.AllUnSignedDocument = <DSSInvoice[]>data;
+  //           this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
+  //           this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
+  //           this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
+  //           this.IsProgressBarVisibile = false;
+  //         },
+  //           (err) => {
+  //             console.error(err);
+  //             this.IsProgressBarVisibile = false;
+  //             this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+  //           });
+  //     }
 
-    }
-    Object.keys(this.documentFormGroup.controls).forEach(key => {
-      this.documentFormGroup.get(key).markAsTouched();
-      this.documentFormGroup.get(key).markAsDirty();
-    });
-  }
+  //   }
+  //   Object.keys(this.documentFormGroup.controls).forEach(key => {
+  //     this.documentFormGroup.get(key).markAsTouched();
+  //     this.documentFormGroup.get(key).markAsDirty();
+  //   });
+  // }
 
   UpdateConfiguration(DSSConfigurationData: DSSConfiguration): void {
     const dialogConfig: MatDialogConfig = {
@@ -703,14 +703,14 @@ export class DashboardComponent implements OnInit {
       this.SignDocumentsDataSource.paginator.firstPage();
     }
   }
-  applyFilterUnSign(filterValue: string): void {
-    this.UnSignDocumentsDataSource.filter = filterValue.trim().toLowerCase();
+  // applyFilterUnSign(filterValue: string): void {
+  //   this.UnSignDocumentsDataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.UnSignDocumentsDataSource.paginator) {
-      this.UnSignDocumentsDataSource.paginator.firstPage();
-    }
+  //   if (this.UnSignDocumentsDataSource.paginator) {
+  //     this.UnSignDocumentsDataSource.paginator.firstPage();
+  //   }
 
-  }
+  // }
 
   applyFilterExp(filterValue: string): void {
     this.ExpiredCertificatesDataSource.filter = filterValue.trim().toLowerCase();

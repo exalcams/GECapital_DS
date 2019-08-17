@@ -3,7 +3,7 @@
     <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="10px">
       <!--card part started-->
       <div fxFlex class="mb-0">
-        <div class="container m-12" fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center"
+        <div class="container " fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center"
           fxLayoutGap="10px" fxLayoutGap.xs="10">
           <div fxFlex class="TileClass successBgColor" (click)="tabone()">
             <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
@@ -20,7 +20,7 @@
             </div>
           </div>
 
-          <div fxFlex class="TileClass armyBgColor" (click)="tabfive()">
+          <!-- <div fxFlex class="TileClass armyBgColor" (click)="tabfive()">
             <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
               <div fxFlex="70%">
                 <h2 class="titleClass">
@@ -33,7 +33,7 @@
                 </h2>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div fxFlex class="TileClass primaryBgColor" (click)="tabtwo()">
             <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
@@ -303,8 +303,7 @@
       <!--Signed documnets part ends-->
 
       <!--Un Signed documnets part starts-->
-      <div class="content" fxLayout="column" *ngIf="tab5">
-        <!-- <div fxLayout="column"> -->
+      <!-- <div class="content" fxLayout="column" *ngIf="tab5">
         <form class="mat-card formGroupStyle" autocomplete="off" fxFlex name="form" [formGroup]="documentFormGroup"
           novalidate>
           <div FxLayout="row" class="formRowStyle" fxLayout.xs="column">
@@ -315,7 +314,6 @@
                   <mat-option>None</mat-option>
                   <mat-option *ngFor="let doc1 of AllDocumentTypes" [value]="doc1.Doc_Type_Name">
                     <span>{{doc1.Doc_Type_Name}}</span>
-                    <!-- {{doc1.Doc_Type_ID}} -->
                   </mat-option>
                 </mat-select>
                 <mat-error
@@ -357,7 +355,6 @@
             </div>
           </div>
         </form>
-        <!-- </div> -->
         <mat-card class="m-12 p-8" style="border-radius: 10px" fxLayout="column">
           <div class="h2 pl-12 pt-8 successColor" fxFlex>SIGNED DOCUMENTS</div>
           <mat-form-field class="pl-12" fxFlex>
@@ -396,10 +393,10 @@
                 <td mat-cell *matCellDef="let row"> {{row.AUTOSIGNED}} </td>
               </ng-container>
 
-              <!-- <ng-container matColumnDef="SIGNED_ON">
+              <ng-container matColumnDef="SIGNED_ON">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> SIGNED_ON </th>
                 <td mat-cell *matCellDef="let row"> {{row.SIGNED_ON | date : 'dd-MM-yyyy hh:mm:ss a'}}</td>
-              </ng-container> -->
+              </ng-container>
 
               <ng-container matColumnDef="View">
                 <th mat-header-cell *matHeaderCellDef> View </th>
@@ -424,7 +421,7 @@
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
           </div>
         </mat-card>
-      </div>
+      </div> -->
       <!--Un Signed documnets part ends-->
 
       <!--Certificate part starts-->
@@ -456,10 +453,10 @@
                 <td mat-cell *matCellDef="let row"> {{row.CONFIG2}}</td>
               </ng-container>
 
-              <!-- <ng-container matColumnDef="DocumentType_ID">
+              <ng-container matColumnDef="DOCTYPE">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc Type</th>
-                <td mat-cell *matCellDef="let row"> {{row.DocumentType_ID}} </td>
-              </ng-container> -->
+                <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
+              </ng-container>
 
               <ng-container matColumnDef="CERT_NAME">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Certificate Name</th>
@@ -475,9 +472,17 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Config3</th>
                 <td mat-cell *matCellDef="let row"> {{row.CONFIG3}} </td>
               </ng-container>
-              <ng-container matColumnDef="AUTHORITY">
+              <ng-container matColumnDef="AUTHORITY2">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority2</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY2}} </td>
+              </ng-container>
+              <ng-container matColumnDef="AUTHORITY3">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority3</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY3}} </td>
+              </ng-container>
+              <ng-container matColumnDef="AUTHORITY1">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY1}} </td>
               </ng-container>
 
               <ng-container matColumnDef="AUTOSIGN">
@@ -495,10 +500,10 @@
                 <td mat-cell *matCellDef="let row"> {{row.PRIORITY4_USER}} </td>
               </ng-container> -->
 
-              <ng-container matColumnDef="DISPLAYTITLE1">
+              <!-- <ng-container matColumnDef="DISPLAYTITLE1">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Title1</th>
                 <td mat-cell *matCellDef="let row"> {{row.DISPLAYTITLE1}} </td>
-              </ng-container>
+              </ng-container> -->
 
               <!-- <ng-container matColumnDef="AUTHORITY">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority</th>
@@ -510,10 +515,10 @@
                 <td mat-cell *matCellDef="let row"> {{row.DISPLAYTITLE1}} </td>
               </ng-container> -->
 
-              <ng-container matColumnDef="DISPLAYTITLE2">
+              <!-- <ng-container matColumnDef="DISPLAYTITLE2">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Title2</th>
                 <td mat-cell *matCellDef="let row"> {{row.DISPLAYTITLE2}} </td>
-              </ng-container>
+              </ng-container> -->
 
               <ng-container matColumnDef="CREATED_ON">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>CreatedOn</th>
@@ -562,7 +567,11 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc Type</th>
                 <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
               </ng-container> -->
-
+              <ng-container matColumnDef="DOCTYPE">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc Type</th>
+                <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
+              </ng-container>
+              
               <ng-container matColumnDef="CONFIG2">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Config2</th>
                 <td mat-cell *matCellDef="let row"> {{row.CONFIG2}}</td>
@@ -588,9 +597,17 @@
                 <td mat-cell *matCellDef="let row"> {{row.CONFIG3}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="AUTHORITY">
+              <ng-container matColumnDef="AUTHORITY2">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority2</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY2}} </td>
+              </ng-container>
+              <ng-container matColumnDef="AUTHORITY3">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority3</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY3}} </td>
+              </ng-container>
+              <ng-container matColumnDef="AUTHORITY1">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY1}} </td>
               </ng-container>
 
               <ng-container matColumnDef="AUTOSIGN">
@@ -608,10 +625,10 @@
                 <td mat-cell *matCellDef="let row"> {{row.PRIORITY4_USER}} </td>
               </ng-container> -->
 
-              <ng-container matColumnDef="DISPLAYTITLE1">
+              <!-- <ng-container matColumnDef="DISPLAYTITLE1">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Title1</th>
                 <td mat-cell *matCellDef="let row"> {{row.DISPLAYTITLE1}} </td>
-              </ng-container>
+              </ng-container> -->
 
               <!-- <ng-container matColumnDef="AUTHORITY">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority</th>
@@ -623,10 +640,10 @@
                 <td mat-cell *matCellDef="let row"> {{row.DISPLAYTITLE1}} </td>
               </ng-container> -->
 
-              <ng-container matColumnDef="DISPLAYTITLE2">
+              <!-- <ng-container matColumnDef="DISPLAYTITLE2">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Title2</th>
                 <td mat-cell *matCellDef="let row"> {{row.DISPLAYTITLE2}} </td>
-              </ng-container>
+              </ng-container> -->
 
               <ng-container matColumnDef="CERT_EX_DT">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Expired On</th>
