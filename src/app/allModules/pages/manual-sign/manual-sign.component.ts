@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from 'app/services/dashboard.service';
 import { DSSInvoice } from 'app/models/dss';
 import { fuseAnimations } from '@fuse/animations';
@@ -28,6 +28,8 @@ export class ManualSignComponent implements OnInit {
   DSSConfigurationData: any;
   notificationSnackBarComponent: NotificationSnackBarComponent;
   IsProgressBarVisibile: boolean;
+  @Output() SaveSucceed: EventEmitter<string> = new EventEmitter<string>();
+  @Output() ShowProgressBarEvent: EventEmitter<string> = new EventEmitter<string>();
   constructor(
     private _dashboardService: DashboardService,
     public snackBar: MatSnackBar,
@@ -115,10 +117,16 @@ export class ManualSignComponent implements OnInit {
     this._dashboardService.ManualSignProcessUsingCert(this.SelectedDocument.ID, this.SelectedDocument.INVOICE_NAME, this.UserID).
       subscribe((data) => {
         this.IsProgressBarVisibile = false;
+        this.notificationSnackBarComponent.openSnackBar('Signed successfully', SnackBarStatus.success);
+        this.SaveSucceed.emit('success');
+        this.GetAllUnSignedDocumentsByUser();
       },
         (err) => {
           console.error(err);
           this.IsProgressBarVisibile = false;
+          this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+          this.ShowProgressBarEvent.emit('hide');
+          this.GetAllUnSignedDocumentsByUser();
         });
 
   }

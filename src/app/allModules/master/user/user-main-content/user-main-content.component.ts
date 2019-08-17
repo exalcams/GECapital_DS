@@ -121,6 +121,7 @@ export class UserMainContentComponent implements OnInit, OnChanges {
                 (data) => {
                   // console.log(data);
                   this.ResetControl();
+                  
                   this.notificationSnackBarComponent.openSnackBar('User updated successfully', SnackBarStatus.success);
                   this.SaveSucceed.emit('success');
                   this._masterService.TriggerNotification('User updated successfully');

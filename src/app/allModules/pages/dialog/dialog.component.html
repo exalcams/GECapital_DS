@@ -87,7 +87,7 @@
                     Configuaration 3 is required
                 </mat-error>
             </mat-form-field>
-            <!-- <div style="margin:10px 0px;color: rgba(0, 0, 0, 0.54)">
+            <div style="margin:10px 0px;color: rgba(0, 0, 0, 0.54)">
                 <mat-label class="h3">Auto sign * </mat-label>
                 <mat-radio-group formControlName="AutoSign" required>
                     <mat-radio-button value='1'>Yes</mat-radio-button>
@@ -97,7 +97,7 @@
                     *ngIf="ConfigurationFormGroup.get('AutoSign').touched && ConfigurationFormGroup.get('AutoSign').hasError('required')">
                     Auto sign is required
                 </mat-error>
-            </div> -->
+            </div>
             <mat-form-field>
                 <mat-select placeholder="Signed Authority" (selectionChange)="SignedAuthoritySelected($event.value)"
                     [disabled]="DSSConfigurationData.CONFIG_ID" formControlName="Authority" required>

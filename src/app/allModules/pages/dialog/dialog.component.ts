@@ -41,7 +41,7 @@ export class DialogComponent implements OnInit {
             //Plant: ['', Validators.required],
             // DocumentType: ['', Validators.required],
             // OutputType: ['', Validators.required],
-           // AutoSign: ['', Validators.required],
+            AutoSign: ['', Validators.required],
             Config1: ['', Validators.required],
             Config2: ['', Validators.required],
             Config3: ['', Validators.required],
@@ -83,7 +83,7 @@ export class DialogComponent implements OnInit {
                 // Plant: this.DSSConfigurationData.Plant_ID,
                 // DocumentType: this.DSSConfigurationData.CONFIG2,
                 // OutputType: this.DSSConfigurationData.CONFIG3,
-                // AutoSign: true,
+                AutoSign: this.DSSConfigurationData.AUTOSIGN,
                 // SignedAuthority: this.DSSConfigurationData.AUTHORITY,
                 Config1:this.DSSConfigurationData.CONFIG1,
                 Config2:this.DSSConfigurationData.CONFIG2,
@@ -105,7 +105,7 @@ export class DialogComponent implements OnInit {
         } else {
             this.DSSConfigurationData = new DSSConfiguration();
             this.ResetControl();
-            //this.ConfigurationFormGroup.get('AutoSign').patchValue('1');
+            this.ConfigurationFormGroup.get('AutoSign').patchValue('0');
         }
     }
 
@@ -355,7 +355,7 @@ export class DialogComponent implements OnInit {
             this.DSSConfigurationData.CONFIG1 = this.ConfigurationFormGroup.get('Config1').value;
             this.DSSConfigurationData.CONFIG2 = this.ConfigurationFormGroup.get('Config2').value;
             this.DSSConfigurationData.CONFIG3 = this.ConfigurationFormGroup.get('Config3').value;
-             this.DSSConfigurationData.AUTOSIGN =true ;
+             this.DSSConfigurationData.AUTOSIGN =this.ConfigurationFormGroup.get('AutoSign').value==0?false:true ;
             // this.DSSConfigurationData.AUTHORITY = this.ConfigurationFormGroup.get('SignedAuthority').value;
             this.DSSConfigurationData.CERT_NAME = this.ConfigurationFormGroup.get('CertificateName').value;
             this.DSSConfigurationData.CERT_EX_DT = this.ConfigurationFormGroup.get('ExpiryDate').value;
