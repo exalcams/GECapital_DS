@@ -49,6 +49,8 @@ export class UserMainContentComponent implements OnInit, OnChanges {
       password: ['', [Validators.required,
       Validators.pattern('(?=.*[a-z].*[a-z].*[a-z])(?=.*[A-Z])(?=.*[0-9].*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]],
       confirmPassword: ['', [Validators.required, confirmPasswordValidator]],
+      displayTitle1: ['', Validators.required],
+      displayTitle2: ['', Validators.required],
       profile: ['']
     });
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
@@ -115,13 +117,15 @@ export class UserMainContentComponent implements OnInit, OnChanges {
               this.user.RoleID = this.userMainFormGroup.get('roleID').value;
               this.user.Email = this.userMainFormGroup.get('email').value;
               this.user.ContactNumber = this.userMainFormGroup.get('contactNumber').value;
+              this.user.DisplayTitle1 = this.userMainFormGroup.get('displayTitle1').value;
+              this.user.DisplayTitle2 = this.userMainFormGroup.get('displayTitle2').value;
               this.user.Password = this.userMainFormGroup.get('password').value;
               this.user.ModifiedBy = this.authenticationDetails.userID.toString();
               this._masterService.UpdateUser(this.user).subscribe(
                 (data) => {
                   // console.log(data);
                   this.ResetControl();
-                  
+
                   this.notificationSnackBarComponent.openSnackBar('User updated successfully', SnackBarStatus.success);
                   this.SaveSucceed.emit('success');
                   this._masterService.TriggerNotification('User updated successfully');
@@ -153,6 +157,8 @@ export class UserMainContentComponent implements OnInit, OnChanges {
               this.user.RoleID = this.userMainFormGroup.get('roleID').value;
               this.user.Email = this.userMainFormGroup.get('email').value;
               this.user.ContactNumber = this.userMainFormGroup.get('contactNumber').value;
+              this.user.DisplayTitle1 = this.userMainFormGroup.get('displayTitle1').value;
+              this.user.DisplayTitle2 = this.userMainFormGroup.get('displayTitle2').value;
               this.user.Password = this.userMainFormGroup.get('password').value;
               this.user.CreatedBy = this.authenticationDetails.userID.toString();
               // this.user.Profile = this.slectedProfile;
@@ -199,6 +205,8 @@ export class UserMainContentComponent implements OnInit, OnChanges {
               this.user.RoleID = this.userMainFormGroup.get('roleID').value;
               this.user.Email = this.userMainFormGroup.get('email').value;
               this.user.ContactNumber = this.userMainFormGroup.get('contactNumber').value;
+              this.user.DisplayTitle1 = this.userMainFormGroup.get('displayTitle1').value;
+              this.user.DisplayTitle2 = this.userMainFormGroup.get('displayTitle2').value;
               this.user.Password = this.userMainFormGroup.get('password').value;
               this.user.ModifiedBy = this.authenticationDetails.userID.toString();
               this._masterService.DeleteUser(this.user).subscribe(
@@ -235,6 +243,8 @@ export class UserMainContentComponent implements OnInit, OnChanges {
       this.userMainFormGroup.get('roleID').patchValue(this.user.RoleID);
       this.userMainFormGroup.get('email').patchValue(this.user.Email);
       this.userMainFormGroup.get('contactNumber').patchValue(this.user.ContactNumber);
+      this.userMainFormGroup.get('displayTitle1').patchValue(this.user.DisplayTitle1);
+      this.userMainFormGroup.get('displayTitle2').patchValue(this.user.DisplayTitle2);
       this.userMainFormGroup.get('password').patchValue(this.user.Password);
       this.userMainFormGroup.get('confirmPassword').patchValue(this.user.Password);
     } else {

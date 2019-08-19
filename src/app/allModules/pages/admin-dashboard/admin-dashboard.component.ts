@@ -69,13 +69,13 @@ export class AdminDashboardComponent implements OnInit {
   ConfigurationsDataSource: MatTableDataSource<DSSConfiguration>;
   ExpiredCertificatesDataSource: MatTableDataSource<DSSConfiguration>;
   ErrorDocumentsDataSource: MatTableDataSource<DSSErrorInvoice>;
-  SignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'SIGNED_AUTHORITY', 'SIGNED_ON', 'View', 'Download'];
+  SignDocumentsColumns: string[] = ['DOCTYPE','INV_NAME', 'CONFIG1', 'CONFIG2', 'CONFIG3', 'SIGNED_AUTHORITY', 'SIGNED_ON', 'View', 'Download'];
  // UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA','SIGNED_AUTHORITY', 'AUTOSIGNED', 'View', 'Download'];
   // tslint:disable-next-line:max-line-length
   ConfigurationsColumns: string[] = ['DOCTYPE','CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'AUTHORITY1', 'AUTHORITY2', 'AUTHORITY3', 'AUTOSIGN','CREATED_ON', 'Edit', 'Delete'];
   // tslint:disable-next-line:max-line-length
   ExpiredCertificatesColumns: string[] = ['DOCTYPE','CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'AUTHORITY1', 'AUTHORITY2', 'AUTHORITY3', 'AUTOSIGN','CERT_EX_DT', 'Edit', 'Delete'];
-  ErrorDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'SIGNED_AUTHORITY', 'CREATED_ON', 'Comment', 'View', 'Download'];
+  ErrorDocumentsColumns: string[] = ['DOCTYPE','INV_NAME', 'CONFIG1', 'CONFIG2', 'CONFIG3', 'SIGNED_AUTHORITY', 'CREATED_ON', 'Comment', 'View', 'Download'];
 
   @ViewChild(MatPaginator) SignDocumentsPaginator: MatPaginator;
   @ViewChild(MatPaginator) UnSignDocumentsPaginator: MatPaginator;
