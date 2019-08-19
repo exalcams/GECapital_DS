@@ -110,3 +110,7 @@ export class GetDocument {
      ToDate: string;
      UserName: string;
 }
+export class ManualSignResponse{
+     StatusMessage:string;
+     Status:string;
+}
