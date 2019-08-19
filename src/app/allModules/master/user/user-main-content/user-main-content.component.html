@@ -80,15 +80,33 @@
     </mat-form-field>
 
   </div>
+  <div fxLayout="row" fxLayoutAlign="start">
 
+    <mat-form-field class="p-12" fxFlex="50">
+      <input matInput placeholder="DisplayTitle1" formControlName="displayTitle1">
+      <mat-error
+        *ngIf="userMainFormGroup.get('displayTitle1').touched &&  userMainFormGroup.get('displayTitle1').hasError('required')">
+        DisplayTitle1 is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="p-12" fxFlex="50">
+      <input matInput placeholder="DisplayTitle2" formControlName="displayTitle2">
+      <mat-error
+        *ngIf="userMainFormGroup.get('displayTitle2').touched &&  userMainFormGroup.get('displayTitle2').hasError('required')">
+        DisplayTitle2 is
+        required</mat-error>
+    </mat-form-field>
+
+  </div>
   <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
 
     <div class="p-12" fxFlex="50">
-        <button type="button" mat-button color="accent" (click)="imgFileInput.click()">Choose Profile
-            <mat-icon>image</mat-icon>
-        </button>
-        <span class="selectProfileClass">{{fileToUpload?.name}}</span>
-        <input hidden type="file" #imgFileInput id="file" accept=".jpg,.jpeg,.png" (change)="handleFileInput($event)"/>
+      <button type="button" mat-button color="accent" (click)="imgFileInput.click()">Choose Profile
+        <mat-icon>image</mat-icon>
+      </button>
+      <span class="selectProfileClass">{{fileToUpload?.name}}</span>
+      <input hidden type="file" #imgFileInput id="file" accept=".jpg,.jpeg,.png" (change)="handleFileInput($event)" />
       <!-- <input type="file" id="file" accept=".jpg,.jpeg,.png" (change)="handleFileInput($event)"> -->
     </div>
 

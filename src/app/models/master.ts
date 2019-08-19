@@ -10,7 +10,8 @@ export class UserWithRole {
     // Plant: string;
     // DocumentType: string;
     // Priority: string;
-    DisplayTitle: string;
+    DisplayTitle1: string;
+    DisplayTitle2: string;
     ReportingTo: string;
     Plant_ID_List: string[];
     DocumentType_ID_List: string[];

@@ -67,24 +67,24 @@
                 </mat-error>
             </mat-form-field> -->
             <mat-form-field>
-                <input [readonly]="DSSConfigurationData.ID" matInput name="Config1" placeholder="Configuaration 1"
-                    formControlName="Config1">
+                <input matInput name="Config1" placeholder="Configuaration 1" formControlName="Config1"
+                    [readonly]="DSSConfigurationData.CONFIG_ID">
                 <mat-error
                     *ngIf="ConfigurationFormGroup.get('Config1').touched && ConfigurationFormGroup.get('Config1').hasError('required')">
                     Configuaration 1 is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
-                <input [readonly]="DSSConfigurationData.ID" matInput name="Config2" placeholder="Configuaration 2"
-                    formControlName="Config2">
+                <input matInput name="Config2" placeholder="Configuaration 2" formControlName="Config2"
+                    [readonly]="DSSConfigurationData.CONFIG_ID">
                 <mat-error
                     *ngIf="ConfigurationFormGroup.get('Config2').touched && ConfigurationFormGroup.get('Config2').hasError('required')">
                     Configuaration 2 is required
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
-                <input matInput name="Config3" [readonly]="DSSConfigurationData.ID" placeholder="Configuaration 3"
-                    formControlName="Config3">
+                <input matInput name="Config3" placeholder="Configuaration 3" formControlName="Config3"
+                    [readonly]="DSSConfigurationData.CONFIG_ID">
                 <!-- <mat-error
                     *ngIf="ConfigurationFormGroup.get('Config3').touched && ConfigurationFormGroup.get('Config3').hasError('required')">
                     Configuaration 3 is required

@@ -67,17 +67,17 @@ export class DashboardComponent implements OnInit {
   dialogRef: any;
 
   SignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
- // UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
+  // UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
   ConfigurationsDataSource: MatTableDataSource<DSSConfiguration>;
   ExpiredCertificatesDataSource: MatTableDataSource<DSSConfiguration>;
   ErrorDocumentsDataSource: MatTableDataSource<DSSErrorInvoice>;
-  SignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'SIGNED_AUTHORITY', 'SIGNED_ON', 'View', 'Download'];
+  SignDocumentsColumns: string[] = ['DOCTYPE','INV_NAME','CONFIG1', 'CONFIG2', 'CONFIG3', 'SIGNED_AUTHORITY', 'SIGNED_ON', 'View', 'Download'];
   // tslint:disable-next-line:max-line-length
-//  UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'AUTOSIGNED', 'View', 'Download'];
-  ConfigurationsColumns: string[] = ['CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'DISPLAYTITLE1', 'DISPLAYTITLE2', 'CREATED_ON'];
+  //  UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'AUTOSIGNED', 'View', 'Download'];
+  ConfigurationsColumns: string[] = ['DOCTYPE', 'CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'AUTHORITY1', 'AUTHORITY2', 'AUTHORITY3', 'AUTOSIGN', 'CREATED_ON'];
   // tslint:disable-next-line:max-line-length
-  ExpiredCertificatesColumns: string[] = ['CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'DISPLAYTITLE1', 'DISPLAYTITLE2', 'CERT_EX_DT'];
-  ErrorDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'CREATED_ON', 'Comment', 'View', 'Download'];
+  ExpiredCertificatesColumns: string[] = ['DOCTYPE','DOCTYPE', 'CONFIG1', 'CONFIG2', 'CONFIG3', 'CERT_NAME', 'AUTHORITY1', 'AUTHORITY2', 'AUTHORITY3', 'AUTOSIGN', 'CERT_EX_DT'];
+  ErrorDocumentsColumns: string[] = ['DOCTYPE','INV_NAME', 'CONFIG1', 'CONFIG2', 'CONFIG3','CREATED_ON', 'Comment', 'View', 'Download'];
 
   @ViewChild(MatPaginator) SignDocumentsPaginator: MatPaginator;
   @ViewChild(MatPaginator) UnSignDocumentsPaginator: MatPaginator;
@@ -160,6 +160,9 @@ export class DashboardComponent implements OnInit {
         // }
         this.GetDSSStatusCountsByUser(this.UserName);
         this.GetAllSignedDocumentsByUser(this.UserName);
+        this.GetAllExpiredCertificatesByUser(this.UserName);
+        this.GetAllConfigurationsByUser(this.UserName);
+        this.GetAllErrorDocumentsByUser(this.UserName);
         // this.GetAllPlants();
         this.GetAllDocumentTypes();
         // this.GetAllOutputTypes();

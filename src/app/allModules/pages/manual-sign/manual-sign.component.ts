@@ -116,10 +116,19 @@ export class ManualSignComponent implements OnInit {
     this.IsProgressBarVisibile = true;
     this._dashboardService.ManualSignProcessUsingCert(this.SelectedDocument.ID, this.SelectedDocument.INVOICE_NAME, this.UserID).
       subscribe((data) => {
-        this.IsProgressBarVisibile = false;
-        this.notificationSnackBarComponent.openSnackBar('Signed successfully', SnackBarStatus.success);
-        this.SaveSucceed.emit('success');
-        this.GetAllUnSignedDocumentsByUser();
+        if(data.status){
+          this.IsProgressBarVisibile = false;
+          this.notificationSnackBarComponent.openSnackBar(data.statusMessage, SnackBarStatus.success);
+          this.SaveSucceed.emit('success');
+          this.GetAllUnSignedDocumentsByUser();
+        }
+        else{
+          this.IsProgressBarVisibile = false;
+          this.notificationSnackBarComponent.openSnackBar(data.statusMessage, SnackBarStatus.danger);
+          this.ShowProgressBarEvent.emit('hide');
+          this.GetAllUnSignedDocumentsByUser();
+        }
+        
       },
         (err) => {
           console.error(err);

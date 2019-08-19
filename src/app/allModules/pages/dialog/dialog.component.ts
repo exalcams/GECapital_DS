@@ -89,7 +89,7 @@ export class DialogComponent implements OnInit {
                 // Plant: this.DSSConfigurationData.Plant_ID,
                 // DocumentType: this.DSSConfigurationData.CONFIG2,
                 // OutputType: this.DSSConfigurationData.CONFIG3,
-                AutoSign: this.DSSConfigurationData.AUTOSIGN,
+                AutoSign: this.DSSConfigurationData.AUTOSIGN === false ? '0' : '1',
                 // SignedAuthority: this.DSSConfigurationData.AUTHORITY,
                 Config1: this.DSSConfigurationData.CONFIG1,
                 Config2: this.DSSConfigurationData.CONFIG2,
@@ -121,6 +121,8 @@ export class DialogComponent implements OnInit {
         this.masterService.GetAllAuthority().subscribe(
             (data) => {
                 this.AllAuthority = <AuthorityClass[]>data;
+                this.AllAuthority1 = <AuthorityClass[]>data;
+                this.AllAuthority2 = <AuthorityClass[]>data;
                 // console.log(this.AllMenuApps);
                 // this.AllDocumentTypeNameCompleted = true;
             },
