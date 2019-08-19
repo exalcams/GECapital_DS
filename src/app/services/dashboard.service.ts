@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { GetDocument, DSSConfiguration, DSSInvoice, DSSStatusCount, CertificateClass, DSSErrorInvoice, UserByPlant, ErrorInvoice } from 'app/models/dss';
+import { GetDocument, DSSConfiguration, DSSInvoice, DSSStatusCount, CertificateClass, DSSErrorInvoice, UserByPlant, ErrorInvoice, ManualSignResponse } from 'app/models/dss';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
@@ -264,8 +264,8 @@ export class DashboardService {
       .pipe(catchError(this.errorHandler));
   }
 
-  ManualSignProcessUsingCert(ID: number, Filename: string, UserID: number): Observable<any> {
-    return this._httpClient.get<any>(`${this.baseUrl}api/ESigner/ManualSignProcessUsingCert?ID=${ID}&Filename=${Filename}&UserID=${UserID}`)
+  ManualSignProcessUsingCert(ID: number, Filename: string, UserID: number): Observable<ManualSignResponse | string> {
+    return this._httpClient.get<ManualSignResponse>(`${this.baseUrl}api/ESigner/ManualSignProcessUsingCert?ID=${ID}&Filename=${Filename}&UserID=${UserID}`)
       .pipe(catchError(this.errorHandler));
   }
 

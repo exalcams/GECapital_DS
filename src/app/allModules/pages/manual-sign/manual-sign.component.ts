@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from 'app/services/dashboard.service';
-import { DSSInvoice } from 'app/models/dss';
+import { DSSInvoice, ManualSignResponse } from 'app/models/dss';
 import { fuseAnimations } from '@fuse/animations';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
 import { MatSnackBar } from '@angular/material';
@@ -23,6 +23,7 @@ export class ManualSignComponent implements OnInit {
   UserID: number;
   searchText: string;
   AllUnSignedDocuments: DSSInvoice[] = [];
+  SignResponse: ManualSignResponse;
   selectID: number;
   SelectedDocument: DSSInvoice;
   DSSConfigurationData: any;
@@ -116,25 +117,28 @@ export class ManualSignComponent implements OnInit {
     this.IsProgressBarVisibile = true;
     this._dashboardService.ManualSignProcessUsingCert(this.SelectedDocument.ID, this.SelectedDocument.INVOICE_NAME, this.UserID).
       subscribe((data) => {
-        if(data.status){
+        this.SignResponse = data as ManualSignResponse;
+        if (this.SignResponse) {
           this.IsProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar(data.statusMessage, SnackBarStatus.success);
+          this.notificationSnackBarComponent.openSnackBar(this.SignResponse.StatusMessage, SnackBarStatus.success);
           this.SaveSucceed.emit('success');
+          document.getElementById( 'iframeforSign' ).setAttribute( 'src', '' );
           this.GetAllUnSignedDocumentsByUser();
         }
-        else{
+        else {
           this.IsProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar(data.statusMessage, SnackBarStatus.danger);
+          this.notificationSnackBarComponent.openSnackBar(this.SignResponse.StatusMessage, SnackBarStatus.danger);
           this.ShowProgressBarEvent.emit('hide');
+          document.getElementById( 'iframeforSign' ).setAttribute( 'src', '' );
           this.GetAllUnSignedDocumentsByUser();
         }
-        
       },
         (err) => {
           console.error(err);
           this.IsProgressBarVisibile = false;
           this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
           this.ShowProgressBarEvent.emit('hide');
+          document.getElementById( 'iframeforSign' ).setAttribute( 'src', '' );
           this.GetAllUnSignedDocumentsByUser();
         });
 
