@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, Input, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, Input } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as shape from 'd3-shape';
@@ -9,7 +9,7 @@ import * as shape from 'd3-shape';
 
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig, MatSnackBar, Sort } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
 import { fuseAnimations } from '@fuse/animations';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -21,7 +21,6 @@ import { NotificationSnackBarComponent } from 'app/notifications/notification-sn
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
 import {
     AuthenticationDetails,
-    OutputType,
     OutputTypeView,
     DocumentOutputType,
     DocumentTypeView,
@@ -35,28 +34,30 @@ import { PdfDialogComponent } from '../pdf-dialog/pdf-dialog.component';
 import { DialogComponent } from '../dialog/dialog.component';
 import { MasterService } from 'app/services/master.service';
 import { CustomValidator } from 'app/shared/custom-validator';
-import { Tree } from '@angular/router/src/utils/tree';
+import { ConfigUserUpdateDialogComponent } from '../config-user-update-dialog/config-user-update-dialog.component';
 
 @Component({
-    selector: 'adminDashboard',
-    templateUrl: './admin-dashboard.component.html',
-    styleUrls: ['./admin-dashboard.component.scss'],
+    selector: 'signedUserDashboard',
+    templateUrl: './signed-user-dashboard.component.html',
+    styleUrls: ['./signed-user-dashboard.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class AdminDashboardComponent implements OnInit {
+export class SignedUserDashboardComponent implements OnInit {
     authenticationDetails: AuthenticationDetails;
+    MenuItems: string[];
+    UserEmailAddress: string;
+    UserName: string;
     public reports: any;
     public expiredata: any;
     public errordata: any;
     public Configdata: any;
-    MenuItems: string[];
     DSSStatusCount: DSSStatusCount = new DSSStatusCount();
     AllSignedDocument: DSSInvoice[] = [];
     AllUnSignedDocument: DSSInvoice[] = [];
     AllConfigurations: DSSConfiguration[] = [];
     AllExpiredCertificates: DSSConfiguration[] = [];
-    AllErrorDocuments: ErrorInvoice[] = [];
+    AllErrorDocuments: DSSErrorInvoice[] = [];
     // AllDocumentTypeNames: string[];
     AllPlants: PlantView[] = [];
     AllDocumentTypes: DocumentTypeView[] = [];
@@ -74,13 +75,13 @@ export class AdminDashboardComponent implements OnInit {
     dialogRef: any;
 
     SignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
-    //  UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
+    // UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
     ConfigurationsDataSource: MatTableDataSource<DSSConfiguration>;
     ExpiredCertificatesDataSource: MatTableDataSource<DSSConfiguration>;
     ErrorDocumentsDataSource: MatTableDataSource<DSSErrorInvoice>;
     SignDocumentsColumns: string[] = ['DOCTYPE', 'INV_NAME', 'CONFIG1', 'CONFIG2', 'CONFIG3', 'SIGNED_AUTHORITY', 'SIGNED_ON', 'View', 'Download'];
-    // UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA','SIGNED_AUTHORITY', 'AUTOSIGNED', 'View', 'Download'];
     // tslint:disable-next-line:max-line-length
+    //  UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'AUTOSIGNED', 'View', 'Download'];
     ConfigurationsColumns: string[] = [
         'DOCTYPE',
         'CONFIG1',
@@ -94,12 +95,11 @@ export class AdminDashboardComponent implements OnInit {
         'AUTHORITY5',
         'AUTHORITY6',
         'AUTOSIGN',
-        'CREATED_ON',
-        'Edit',
-        'Delete'
+        'CREATED_ON'
     ];
     // tslint:disable-next-line:max-line-length
     ExpiredCertificatesColumns: string[] = [
+        'DOCTYPE',
         'DOCTYPE',
         'CONFIG1',
         'CONFIG2',
@@ -112,22 +112,9 @@ export class AdminDashboardComponent implements OnInit {
         'AUTHORITY5',
         'AUTHORITY6',
         'AUTOSIGN',
-        'CERT_EX_DT',
-        'Edit',
-        'Delete'
+        'CERT_EX_DT'
     ];
-    ErrorDocumentsColumns: string[] = [
-        'DOCTYPE',
-        'INV_NAME',
-        'CONFIG1',
-        'CONFIG2',
-        'CONFIG3',
-        'SIGNED_AUTHORITY',
-        'CREATED_ON',
-        'Comment',
-        'View',
-        'Download'
-    ];
+    ErrorDocumentsColumns: string[] = ['DOCTYPE', 'INV_NAME', 'CONFIG1', 'CONFIG2', 'CONFIG3', 'CREATED_ON', 'Comment', 'View', 'Download'];
 
     @ViewChild(MatPaginator) SignDocumentsPaginator: MatPaginator;
     @ViewChild(MatPaginator) UnSignDocumentsPaginator: MatPaginator;
@@ -149,13 +136,10 @@ export class AdminDashboardComponent implements OnInit {
     IsProgressBarVisibile: boolean;
     IsDSSStatusCountCompleted: boolean;
     IsAllSignedDocumentCompleted: boolean;
-    IsAllUnSignedDocumentCompleted: boolean;
-    // AllPlantCompleted: boolean;
+    AllPlantCompleted: boolean;
     AllDocumentTypeNameCompleted: boolean;
-    // AllOutputTypeNameCompleted: boolean;
+    AllOutputTypeNameCompleted: boolean;
     notificationSnackBarComponent: NotificationSnackBarComponent;
-    SetIntervalID: NodeJS.Timer;
-
     constructor(
         public _matDialog: MatDialog,
         public dashboardService: DashboardService,
@@ -186,10 +170,9 @@ export class AdminDashboardComponent implements OnInit {
         this.IsProgressBarVisibile = true;
         this.IsDSSStatusCountCompleted = false;
         this.IsAllSignedDocumentCompleted = false;
-        this.IsAllUnSignedDocumentCompleted = false;
-        // this.AllPlantCompleted = false;
+        this.AllPlantCompleted = false;
         this.AllDocumentTypeNameCompleted = false;
-        // this.AllOutputTypeNameCompleted = false;
+        this.AllOutputTypeNameCompleted = false;
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
         this.isDateError = false;
         this.isInvoiceError = false;
@@ -197,46 +180,62 @@ export class AdminDashboardComponent implements OnInit {
 
     ngOnInit(): void {
         // Retrive authorizationData
+        this.UserEmailAddress = '';
+        this.UserName = '';
         const retrievedObject = localStorage.getItem('authorizationData');
         if (retrievedObject) {
             this.authenticationDetails = JSON.parse(retrievedObject) as AuthenticationDetails;
             this.MenuItems = this.authenticationDetails.menuItemNames.split(',');
-            if (this.MenuItems.indexOf('AdminDashboard') < 0) {
+            if (this.MenuItems.indexOf('SignedUserDashboard') < 0) {
                 this.notificationSnackBarComponent.openSnackBar('You do not have permission to visit this page', SnackBarStatus.danger);
                 this._router.navigate(['/auth/login']);
             } else {
-                this.GetDSSStatusCounts();
-                this.GetAllSignedDocument();
-                // this.GetAllUnSignedDocument();
-                this.GetAllConfigurations();
-                this.GetAllErrorDocuments();
-                this.GetAllExpiredCertificates();
-                //this.GetAllDocumentTypeNames();
-                //this.GetAllPlants();
+                this.UserEmailAddress = this.authenticationDetails.emailAddress;
+                this.UserName = this.authenticationDetails.userName;
+                // const isConfigurationDialog = this.authenticationDetails.isConfigurationDialog;
+                // if (isConfigurationDialog && isConfigurationDialog === 'Yes') {
+                //   setTimeout(() => this.UpdateConfigUser());
+                // }
+                this.GetDSSStatusCountsByUser(this.UserName);
+                this.GetAllSignedDocumentsByUser(this.UserName);
+                this.GetAllExpiredCertificatesByUser(this.UserName);
+                this.GetAllConfigurationsByUser(this.UserName);
+                this.GetAllErrorDocumentsByUser(this.UserName);
+                // this.GetAllPlants();
                 this.GetAllDocumentTypes();
-                //this.GetAllOutputTypes();
-                //this.GetAllDocumentOutputTypeMapViews();
-                this.GetAllNormalUsers();
+                // this.GetAllOutputTypes();
+                // this.GetAllDocumentOutputTypeMapViews();
+                //this.GetAllNormalUsers();
                 //this.GetAllUserPlantMapViews();
-                // this.SetIntervalID = setInterval(() => {
-                //   // this.GetAllTransactionDetails();
-                //   this.GetDSSStatusCounts();
-                //   this.GetAllSignedDocument();
-                //   this.GetAllUnSignedDocument();
-                //   this.GetAllConfigurations();
-                //   this.GetAllErrorDocuments();
-                //   this.GetAllExpiredCertificates();
-                //   //this.GetAllDocumentTypeNames();
-                //   //this.GetAllPlants();
-                //   this.GetAllDocumentTypes();
-                //   //this.GetAllOutputTypes();
-                //   //this.GetAllDocumentOutputTypeMapViews();
-                //   this.GetAllNormalUsers();
-                // }, 3000);
             }
         } else {
             this._router.navigate(['/auth/login']);
         }
+    }
+
+    UpdateConfigUser(): void {
+        const dialogConfig: MatDialogConfig = {
+            data: this.UserName,
+            panelClass: 'config-user-dialog'
+        };
+        const dialogRef = this.dialog.open(ConfigUserUpdateDialogComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const SignedAuthority = result as string;
+                this.dashboardService.UpdateAllConfigurationsByUser(this.UserName, SignedAuthority).subscribe(
+                    res => {
+                        // console.log(res);
+                        this.notificationSnackBarComponent.openSnackBar('Configurations updated successfully', SnackBarStatus.success);
+                    },
+                    err => {
+                        this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+                        console.error(err);
+                    }
+                );
+            }
+            this.authenticationDetails.isConfigurationDialog = 'No';
+            localStorage.setItem('authorizationData', JSON.stringify(this.authenticationDetails));
+        });
     }
 
     tabone(): void {
@@ -245,7 +244,7 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = false;
         this.tab4 = false;
         this.tab5 = false;
-        this.GetAllSignedDocument();
+        this.GetAllSignedDocumentsByUser(this.UserName);
         this.ResetControl();
     }
     tabtwo(): void {
@@ -254,7 +253,7 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = false;
         this.tab4 = false;
         this.tab5 = false;
-        this.GetAllConfigurations();
+        this.GetAllConfigurationsByUser(this.UserName);
         this.ResetControl();
     }
     tabthree(): void {
@@ -263,7 +262,7 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = true;
         this.tab4 = false;
         this.tab5 = false;
-        this.GetAllExpiredCertificates();
+        this.GetAllExpiredCertificatesByUser(this.UserName);
         this.ResetControl();
     }
     tabfour(): void {
@@ -272,18 +271,19 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = false;
         this.tab4 = true;
         this.tab5 = false;
-        this.GetAllErrorDocuments();
+        this.GetAllErrorDocumentsByUser(this.UserName);
         this.ResetControl();
     }
-    // tabfive() {
+    // tabfive(): void {
     //   this.tab1 = false;
     //   this.tab2 = false;
     //   this.tab3 = false;
     //   this.tab4 = false;
     //   this.tab5 = true;
-    //   this.GetAllUnSignedDocument();
+    //   this.GetAllUnSignedDocumentsByUser(this.UserName);
     //   this.ResetControl();
     // }
+
     ResetControl(): void {
         this.getDocument = new GetDocument();
         this.documentFormGroup.reset();
@@ -294,15 +294,12 @@ export class AdminDashboardComponent implements OnInit {
         this.AllFilteredUsers = this.AllUsers;
     }
 
-    // For Administrator
-
-    GetDSSStatusCounts(): void {
-        this.dashboardService.GetDSSStatusCounts().subscribe(
+    // For Normal user
+    GetDSSStatusCountsByUser(UserName: string): void {
+        this.dashboardService.GetDSSStatusCountsByUser(UserName).subscribe(
             data => {
                 if (data) {
                     this.DSSStatusCount = data as DSSStatusCount;
-                    // console.log(this.DSSStatusCount);
-                    // console.log(this.DSSStatusCount.SignedDocumnentCount);
                 }
                 this.IsDSSStatusCountCompleted = true;
             },
@@ -313,9 +310,9 @@ export class AdminDashboardComponent implements OnInit {
         );
     }
 
-    GetAllSignedDocument(): void {
+    GetAllSignedDocumentsByUser(UserName: string): void {
         this.IsProgressBarVisibile = true;
-        this.dashboardService.GetAllSignedDocument().subscribe(
+        this.dashboardService.GetAllSignedDocumentsByUser(UserName).subscribe(
             data => {
                 if (data) {
                     this.AllSignedDocument = <DSSInvoice[]>data;
@@ -334,11 +331,11 @@ export class AdminDashboardComponent implements OnInit {
             }
         );
     }
-    // GetAllUnSignedDocument(): void {
-    //   // alert("hi");
+
+    // GetAllUnSignedDocumentsByUser(UserName: string): void {
     //   this.IsProgressBarVisibile = true;
     //   this.dashboardService
-    //     .GetAllUnSignedDocument()
+    //     .GetAllUnSignedDocumentsByUser(UserName)
     //     .subscribe((data) => {
     //       if (data) {
     //         this.AllUnSignedDocument = <DSSInvoice[]>data;
@@ -347,22 +344,22 @@ export class AdminDashboardComponent implements OnInit {
     //         this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
     //         this.DSSStatusCount.UnSignedDocumnentCount = this.AllUnSignedDocument.length;
     //       }
-    //       this.IsAllUnSignedDocumentCompleted = true;
+    //       this.IsAllSignedDocumentCompleted = true;
     //       this.IsProgressBarVisibile = false;
     //     },
     //       (err) => {
     //         console.error(err);
-    //         this.IsAllUnSignedDocumentCompleted = true;
+    //         this.IsAllSignedDocumentCompleted = true;
     //         this.IsProgressBarVisibile = false;
     //       });
     // }
-    GetAllConfigurations(): void {
+
+    GetAllConfigurationsByUser(UserName: string): void {
         this.IsProgressBarVisibile = true;
-        this.dashboardService.GetAllConfigurations().subscribe(
+        this.dashboardService.GetAllConfigurationsByUser(UserName).subscribe(
             data => {
                 if (data) {
                     this.AllConfigurations = <DSSConfiguration[]>data;
-                    // console.log(this.AllConfigurations);
                     this.ConfigurationsDataSource = new MatTableDataSource(this.AllConfigurations);
                     this.ConfigurationsDataSource.paginator = this.ConfigurationsPaginator;
                     this.ConfigurationsDataSource.sort = this.ConfigurationsSort;
@@ -377,9 +374,9 @@ export class AdminDashboardComponent implements OnInit {
         );
     }
 
-    GetAllExpiredCertificates(): void {
+    GetAllExpiredCertificatesByUser(UserName: string): void {
         this.IsProgressBarVisibile = true;
-        this.dashboardService.GetAllExpiredCertificates().subscribe(
+        this.dashboardService.GetAllExpiredCertificatesByUser(UserName).subscribe(
             data => {
                 if (data) {
                     this.AllExpiredCertificates = <DSSConfiguration[]>data;
@@ -396,9 +393,10 @@ export class AdminDashboardComponent implements OnInit {
             }
         );
     }
-    GetAllErrorDocuments(): void {
+
+    GetAllErrorDocumentsByUser(UserName: string): void {
         this.IsProgressBarVisibile = true;
-        this.dashboardService.GetAllErrorDocuments().subscribe(
+        this.dashboardService.GetAllErrorDocumentsByUser(UserName).subscribe(
             data => {
                 if (data) {
                     this.AllErrorDocuments = <ErrorInvoice[]>data;
@@ -429,7 +427,7 @@ export class AdminDashboardComponent implements OnInit {
     //     });
     // }
     // GetAllPlants(): void {
-    //   this.masterService.GetAllPlantViews().subscribe(
+    //   this.masterService.GetAllPlantViewsByUser(this.UserName).subscribe(
     //     (data) => {
     //       this.AllPlants = <PlantView[]>data;
     //       // console.log(this.AllMenuApps);
@@ -445,8 +443,8 @@ export class AdminDashboardComponent implements OnInit {
         this.masterService.GetAllDocumentTypeViews().subscribe(
             data => {
                 this.AllDocumentTypes = <DocumentTypeView[]>data;
-                // console.log(this.AllMenuApps);
                 this.AllDocumentTypeNameCompleted = true;
+                // console.log(this.AllMenuApps);
             },
             err => {
                 console.error(err);
@@ -455,11 +453,10 @@ export class AdminDashboardComponent implements OnInit {
         );
     }
     // GetAllOutputTypes(): void {
-    //   this.masterService.GetAllOutputTypeViews().subscribe((data) => {
+    //   this.masterService.GetAllOutputTypeViewsByUser(this.UserName).subscribe((data) => {
     //     if (data) {
     //       this.AllOutputTypes = data as OutputTypeView[];
     //       this.AllFilteredOutputTypes = data as OutputTypeView[];
-    //       // console.log(this.AllOutputTypes);
     //     }
     //     this.AllOutputTypeNameCompleted = true;
     //   },
@@ -469,7 +466,7 @@ export class AdminDashboardComponent implements OnInit {
     //     });
     // }
     // GetAllDocumentOutputTypeMapViews(): void {
-    //   this.masterService.GetAllDocumentOutputTypeMapViews().subscribe((data) => {
+    //   this.masterService.GetAllDocumentOutputTypeMapViewsByUser(this.UserName).subscribe((data) => {
     //     if (data) {
     //       this.AllDocumentOutputTypeMapView = data as DocumentOutputTypeMapView[];
     //       // console.log(this.AllOutputTypes);
@@ -481,22 +478,22 @@ export class AdminDashboardComponent implements OnInit {
     //       this.AllOutputTypeNameCompleted = true;
     //     });
     // }
-    PlantSelected(event): void {
-        // console.log(event.value);
-        if (event.value) {
-            const UserNameList = this.AllUserPlantMapViews.filter(x => x.Plant_ID === event.value);
-            this.AllFilteredUsers = this.AllUsers.filter(x => UserNameList.some(y => x === y.UserName));
-            const aut = this.documentFormGroup.get('Authority').value;
-            if (aut) {
-                const res = this.AllFilteredUsers.filter(x => x === aut)[0];
-                if (!res) {
-                    this.documentFormGroup.get('Authority').patchValue('');
-                }
-            }
-        } else {
-            this.AllFilteredUsers = this.AllUsers;
-        }
-    }
+    // PlantSelected(event): void {
+    //   // console.log(event.value);
+    //   if (event.value) {
+    //     const UserNameList = this.AllUserPlantMapViews.filter(x => x.Plant_ID === event.value);
+    //     this.AllFilteredUsers = this.AllUsers.filter(x => UserNameList.some((y) => x === y.UserName));
+    //     const aut = this.documentFormGroup.get('Authority').value;
+    //     if (aut) {
+    //       const res = this.AllFilteredUsers.filter(x => x === aut)[0];
+    //       if (!res) {
+    //         this.documentFormGroup.get('Authority').patchValue('');
+    //       }
+    //     }
+    //   } else {
+    //     this.AllFilteredUsers = this.AllUsers;
+    //   }
+    // }
     DocumentTypeIDSelected(event): void {
         // console.log(event.value);
         if (event.value) {
@@ -513,24 +510,22 @@ export class AdminDashboardComponent implements OnInit {
             this.AllFilteredOutputTypes = this.AllOutputTypes;
         }
     }
-    GetAllNormalUsers(): void {
-        this.masterService.GetAllNormalUsers().subscribe(
-            data => {
-                if (data) {
-                    this.AllUsers = data as string[];
-                    this.AllFilteredUsers = data as string[];
-                    // console.log(this.AllOutputTypes);
-                }
-                // this.AllOutputTypeNameCompleted = true;
-            },
-            err => {
-                console.error(err);
-                // this.AllOutputTypeNameCompleted = true;
-            }
-        );
-    }
+    // GetAllNormalUsers(): void {
+    //   this.masterService.GetAllNormalUsersByUser(this.UserName).subscribe((data) => {
+    //     if (data) {
+    //       this.AllUsers = data as string[];
+    //       this.AllFilteredUsers = data as string[];
+    //       // console.log(this.AllOutputTypes);
+    //     }
+    //     // this.AllOutputTypeNameCompleted = true;
+    //   },
+    //     (err) => {
+    //       console.error(err);
+    //       // this.AllOutputTypeNameCompleted = true;
+    //     });
+    // }
     // GetAllUserPlantMapViews(): void {
-    //   this.masterService.GetAllUserPlantMapViews().subscribe((data) => {
+    //   this.masterService.GetAllUserPlantMapViewsByUser(this.UserName).subscribe((data) => {
     //     if (data) {
     //       this.AllUserPlantMapViews = data as UserPlantMapView[];
     //       // console.log(this.AllOutputTypes);
@@ -542,6 +537,7 @@ export class AdminDashboardComponent implements OnInit {
     //       // this.AllOutputTypeNameCompleted = true;
     //     });
     // }
+
     InvoiceKeyUp(): void {
         // console.log('Called');
         const FromInvoice = this.documentFormGroup.get('FromInvoice').value;
@@ -593,7 +589,8 @@ export class AdminDashboardComponent implements OnInit {
                 this.getDocument.ToDate = this.datePipe.transform(this.documentFormGroup.get('ToDate').value as Date, 'yyyy-MM-dd');
                 // this.getDocument.FromDate = this.documentFormGroup.get('FromDate').value;
                 // this.getDocument.ToDate = this.documentFormGroup.get('ToDate').value;
-                this.dashboardService.GetAllInvoicesBasedOnDate(this.getDocument).subscribe(
+                this.getDocument.UserName = this.UserName;
+                this.dashboardService.GetAllInvoicesBasedOnDateByUser(this.getDocument).subscribe(
                     data => {
                         this.AllSignedDocument = <DSSInvoice[]>data;
                         this.SignDocumentsDataSource = new MatTableDataSource(this.AllSignedDocument);
@@ -614,6 +611,7 @@ export class AdminDashboardComponent implements OnInit {
             this.documentFormGroup.get(key).markAsDirty();
         });
     }
+
     // GetAllUnsignedInvoicesBasedOnDate(): void {
     //   if (this.documentFormGroup.valid) {
     //     if (!this.isDateError && !this.isInvoiceError) {
@@ -622,7 +620,8 @@ export class AdminDashboardComponent implements OnInit {
     //       this.getDocument.DocumentType = this.documentFormGroup.get('DocumentType').value;
     //       this.getDocument.FromDate = this.datePipe.transform(this.documentFormGroup.get('FromDate').value as Date, 'yyyy-MM-dd');
     //       this.getDocument.ToDate = this.datePipe.transform(this.documentFormGroup.get('ToDate').value as Date, 'yyyy-MM-dd');
-    //       this.dashboardService.GetAllUnSignedInvoicesBasedOnDate(this.getDocument)
+    //       this.getDocument.UserName = this.UserName;
+    //       this.dashboardService.GetAllUnSignedInvoicesBasedOnDateByUser(this.getDocument)
     //         .subscribe((data) => {
     //           this.AllUnSignedDocument = <DSSInvoice[]>data;
     //           this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
@@ -643,6 +642,59 @@ export class AdminDashboardComponent implements OnInit {
     //     this.documentFormGroup.get(key).markAsDirty();
     //   });
     // }
+
+    UpdateConfiguration(DSSConfigurationData: DSSConfiguration): void {
+        const dialogConfig: MatDialogConfig = {
+            data: DSSConfigurationData,
+            panelClass: 'config-dialog'
+        };
+        const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const DSSConfig = result as DSSConfiguration;
+                this.IsProgressBarVisibile = true;
+                this.dashboardService.UpdateConfiguration(DSSConfig).subscribe(
+                    data => {
+                        this.IsProgressBarVisibile = false;
+                        this.notificationSnackBarComponent.openSnackBar('Configuration updated successfully', SnackBarStatus.success);
+                        this.GetAllConfigurationsByUser(this.UserName);
+                    },
+                    err => {
+                        this.IsProgressBarVisibile = false;
+                        this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+                        console.error(err);
+                    }
+                );
+            }
+        });
+    }
+    ActivateConfiguration(DSSConfig: DSSConfiguration): void {
+        const dialogConfig: MatDialogConfig = {
+            data: {
+                Actiontype: 'Activate',
+                Catagory: 'Configuration'
+            },
+            panelClass: 'confirmation-dialog'
+        };
+        const dialogRef = this.dialog.open(NotificationDialogComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.IsProgressBarVisibile = true;
+                this.dashboardService.ActivateConfiguration(DSSConfig).subscribe(
+                    data => {
+                        this.IsProgressBarVisibile = false;
+                        this.notificationSnackBarComponent.openSnackBar('Configuration activated successfully', SnackBarStatus.success);
+                        this.GetAllConfigurationsByUser(this.UserName);
+                    },
+                    err => {
+                        this.IsProgressBarVisibile = false;
+                        this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+                        console.error(err);
+                    }
+                );
+            }
+        });
+    }
     DowloandPdfFromID(ID: number, fileName: string): void {
         this.IsProgressBarVisibile = true;
         this.dashboardService.DowloandPdfFromID(ID).subscribe(
@@ -657,7 +709,6 @@ export class AdminDashboardComponent implements OnInit {
             }
         );
     }
-
     ViewPdfFromID(ID: number, fileName: string): void {
         this.IsProgressBarVisibile = true;
         this.dashboardService.DowloandPdfFromID(ID).subscribe(
@@ -683,91 +734,6 @@ export class AdminDashboardComponent implements OnInit {
         );
     }
 
-    AddConfigurations(): void {
-        const dialogConfig: MatDialogConfig = {
-            data: null,
-            panelClass: 'config-dialog'
-        };
-        const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                const DSSConfig = result as DSSConfiguration;
-                DSSConfig.CREATED_BY = this.authenticationDetails.userName;
-                this.IsProgressBarVisibile = true;
-                this.dashboardService.CreateConfiguration(DSSConfig).subscribe(
-                    data => {
-                        this.IsProgressBarVisibile = false;
-                        this.notificationSnackBarComponent.openSnackBar('Configuration created successfully', SnackBarStatus.success);
-                        this.GetAllConfigurations();
-                    },
-                    err => {
-                        this.IsProgressBarVisibile = false;
-                        this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
-                        console.error(err);
-                    }
-                );
-            }
-        });
-    }
-
-    UpdateConfiguration(DSSConfigurationData: DSSConfiguration): void {
-        // console.log(DSSConfigurationData);
-        const dialogConfig: MatDialogConfig = {
-            data: DSSConfigurationData,
-            panelClass: 'config-dialog'
-        };
-        const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                const DSSConfig = result as DSSConfiguration;
-                DSSConfig.LASTMODIFIED_BY = this.authenticationDetails.userName;
-                this.IsProgressBarVisibile = true;
-                this.dashboardService.UpdateConfiguration(DSSConfig).subscribe(
-                    data => {
-                        this.IsProgressBarVisibile = false;
-                        this.notificationSnackBarComponent.openSnackBar('Configuration updated successfully', SnackBarStatus.success);
-                        this.GetAllConfigurations();
-                    },
-                    err => {
-                        this.IsProgressBarVisibile = false;
-                        this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
-                        console.error(err);
-                    }
-                );
-            }
-        });
-    }
-
-    DeleteConfiguration(DSSConfig: DSSConfiguration): void {
-        const dialogConfig: MatDialogConfig = {
-            data: {
-                Actiontype: 'Delete',
-                Catagory: 'Configuration'
-            },
-            panelClass: 'confirmation-dialog'
-        };
-        const dialogRef = this.dialog.open(NotificationDialogComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.IsProgressBarVisibile = true;
-                DSSConfig.LASTMODIFIED_BY = this.authenticationDetails.userName;
-                this.dashboardService.DeleteConfiguration(DSSConfig).subscribe(
-                    data => {
-                        this.IsProgressBarVisibile = false;
-                        this.notificationSnackBarComponent.openSnackBar('Configuration deleted successfully', SnackBarStatus.success);
-                        this.GetAllConfigurations();
-                        this.GetAllExpiredCertificates();
-                    },
-                    err => {
-                        this.IsProgressBarVisibile = false;
-                        this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
-                        console.error(err);
-                    }
-                );
-            }
-        });
-    }
-
     applyFilter(filterValue: string): void {
         this.SignDocumentsDataSource.filter = filterValue.trim().toLowerCase();
 
@@ -783,6 +749,7 @@ export class AdminDashboardComponent implements OnInit {
     //   }
 
     // }
+
     applyFilterExp(filterValue: string): void {
         this.ExpiredCertificatesDataSource.filter = filterValue.trim().toLowerCase();
 

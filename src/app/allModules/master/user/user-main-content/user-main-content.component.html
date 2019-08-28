@@ -1,5 +1,5 @@
-<form class="mat-card mat-elevation-z4 p-24" autocomplete="off" fxLayout="column" fxLayoutAlign="start"
-  fxFlex="1 0 auto" name="form" [formGroup]="userMainFormGroup" novalidate>
+<form class="mat-card mat-elevation-z4 p-24" autocomplete="off" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form"
+  [formGroup]="userMainFormGroup" novalidate>
 
   <div class="h2 mb-24">{{user.UserID?'Update':'Create'}} User</div>
 
@@ -8,8 +8,7 @@
 
     <mat-form-field class="p-12" fxFlex="50">
       <input matInput placeholder="User Name" formControlName="userName">
-      <mat-error
-        *ngIf="userMainFormGroup.get('userName').touched &&  userMainFormGroup.get('userName').hasError('required')">
+      <mat-error *ngIf="userMainFormGroup.get('userName').touched &&  userMainFormGroup.get('userName').hasError('required')">
         User
         Name required</mat-error>
     </mat-form-field>
@@ -27,11 +26,11 @@
 
   </div>
   <div fxLayout="row" fxLayoutAlign="start" *ngIf="!user.UserID">
-
+    <!-- <mat-icon  style="font-size: 15px;margin-right: -25px">remove_red_eye</mat-icon> -->
     <mat-form-field class="p-12" fxFlex="50">
-      <input type="password" matInput placeholder="Password" formControlName="password">
-      <mat-error
-        *ngIf="userMainFormGroup.get('password').touched && userMainFormGroup.get('password').hasError('required')">
+      <input matTooltip="Passwords must have minimum One Uppercase letter,three lower case letter,two digit,one special character and
+      minimum length of 8 and don't start with digit" type="password" matInput placeholder="Password" formControlName="password">
+      <mat-error *ngIf="userMainFormGroup.get('password').touched && userMainFormGroup.get('password').hasError('required')">
         Password
         required</mat-error>
       <mat-error *ngIf="userMainFormGroup.get('password').touched && !userMainFormGroup.get('password').hasError('required') &&
@@ -43,8 +42,7 @@
 
     <mat-form-field class="p-12" fxFlex="50">
       <input type="password" matInput placeholder="Confirm Password" formControlName="confirmPassword">
-      <mat-error
-        *ngIf="userMainFormGroup.get('confirmPassword').touched && userMainFormGroup.get('confirmPassword').hasError('required')">
+      <mat-error *ngIf="userMainFormGroup.get('confirmPassword').touched && userMainFormGroup.get('confirmPassword').hasError('required')">
         Confirm password required
       </mat-error>
       <mat-error *ngIf="userMainFormGroup.get('confirmPassword').touched && !userMainFormGroup.get('confirmPassword').hasError('required') &&
@@ -58,12 +56,10 @@
   <div fxLayout="row" fxLayoutAlign="start">
 
     <mat-form-field class="p-12" fxFlex="50">
-      <input matInput placeholder="Mobile Number" pattern="^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$"
-        formControlName="contactNumber">
-      <mat-error
-        *ngIf="userMainFormGroup.get('contactNumber').touched && userMainFormGroup.get('contactNumber').hasError('required')">
+      <input matInput placeholder="Mobile Number" pattern="^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$" formControlName="contactNumber">
+      <!-- <mat-error *ngIf="userMainFormGroup.get('contactNumber').touched && userMainFormGroup.get('contactNumber').hasError('required')">
         Mobile Number is required
-      </mat-error>
+      </mat-error> -->
       <mat-error *ngIf="userMainFormGroup.get('contactNumber').touched && !userMainFormGroup.get('contactNumber').hasError('required') &&
                 userMainFormGroup.get('contactNumber').hasError('pattern')">
         Please enter a valid Mobile Number
@@ -71,33 +67,28 @@
     </mat-form-field>
 
     <mat-form-field class="p-12" fxFlex="50">
-      <mat-select placeholder="Role Name" formControlName="roleID">
+      <mat-select placeholder="Role Name" formControlName="roleID" (selectionChange)="SelectedRoles($event.value)">
         <mat-option *ngFor="let rol of AllRoles" [value]="rol.RoleID">{{rol.RoleName}}</mat-option>
       </mat-select>
-      <mat-error
-        *ngIf="userMainFormGroup.get('roleID').touched && userMainFormGroup.get('roleID').hasError('required')">Role
+      <mat-error *ngIf="userMainFormGroup.get('roleID').touched && userMainFormGroup.get('roleID').hasError('required')">Role
         Name required</mat-error>
     </mat-form-field>
 
   </div>
-  <div fxLayout="row" fxLayoutAlign="start">
-
+  <div *ngIf="SelectedRole !== 'User'" fxLayout="row" fxLayoutAlign="start">
     <mat-form-field class="p-12" fxFlex="50">
       <input matInput placeholder="DisplayTitle1" formControlName="displayTitle1">
-      <mat-error
-        *ngIf="userMainFormGroup.get('displayTitle1').touched &&  userMainFormGroup.get('displayTitle1').hasError('required')">
+      <mat-error  *ngIf="userMainFormGroup.get('displayTitle1').touched &&  userMainFormGroup.get('displayTitle1').hasError('required')">
         DisplayTitle1 is
         required</mat-error>
     </mat-form-field>
 
     <mat-form-field class="p-12" fxFlex="50">
       <input matInput placeholder="DisplayTitle2" formControlName="displayTitle2">
-      <mat-error
-        *ngIf="userMainFormGroup.get('displayTitle2').touched &&  userMainFormGroup.get('displayTitle2').hasError('required')">
+      <!-- <mat-error *ngIf="userMainFormGroup.get('displayTitle2').touched &&  userMainFormGroup.get('displayTitle2').hasError('required')">
         DisplayTitle2 is
-        required</mat-error>
+        required</mat-error> -->
     </mat-form-field>
-
   </div>
   <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
 
@@ -120,7 +111,7 @@
     <button mat-raised-button type="button" (click)="ResetControl()" *ngIf="!user.UserID" style="margin-right:10px">
       Clear
     </button>
-    <button mat-raised-button color="warn" type="button" (click)="DeleteClicked()" *ngIf="user.UserID"
+    <button mat-raised-button color="warn" type="button" [disabled]="SelectedRole==='Administrator'" (click)="DeleteClicked()" *ngIf="user.UserID"
       style="margin-right:10px">
       Delete
     </button>

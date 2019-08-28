@@ -37,21 +37,13 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule,
+    MatTreeModule
 } from '@angular/material';
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import {
-    FuseCountdownModule,
-    FuseHighlightModule,
-    FuseMaterialColorPickerModule,
-    FuseWidgetModule
-} from '@fuse/components';
-
-
+import { FuseCountdownModule, FuseHighlightModule, FuseMaterialColorPickerModule, FuseWidgetModule } from '@fuse/components';
 
 import { FuseSharedModule } from '@fuse/shared.module';
-
 
 import { DashboardService } from '../../services/dashboard.service';
 import { DialogComponent } from './dialog/dialog.component';
@@ -62,6 +54,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ConfigUserUpdateDialogComponent } from './config-user-update-dialog/config-user-update-dialog.component';
 import { ManualSignComponent } from './manual-sign/manual-sign.component';
+import { SignedUserDashboardComponent } from './signed-user-dashboard/signed-user-dashboard.component';
 
 const routes = [
     {
@@ -75,6 +68,10 @@ const routes = [
     {
         path: 'manualSign',
         component: ManualSignComponent
+    },
+    {
+        path: 'signedUserDashboard',
+        component: SignedUserDashboardComponent
     },
     {
         path: '**',
@@ -136,12 +133,16 @@ const routes = [
         FormsModule,
         PdfViewerModule
     ],
-    declarations: [DashboardComponent, DialogComponent, PdfDialogComponent, AdminDashboardComponent, ConfigUserUpdateDialogComponent, ManualSignComponent],
-    providers: [DashboardService],
-    entryComponents: [
+    declarations: [
+        DashboardComponent,
         DialogComponent,
         PdfDialogComponent,
-        ConfigUserUpdateDialogComponent
-    ]
+        AdminDashboardComponent,
+        ConfigUserUpdateDialogComponent,
+        ManualSignComponent,
+        SignedUserDashboardComponent
+    ],
+    providers: [DashboardService],
+    entryComponents: [DialogComponent, PdfDialogComponent, ConfigUserUpdateDialogComponent]
 })
-export class PagesModule { }
+export class PagesModule {}
