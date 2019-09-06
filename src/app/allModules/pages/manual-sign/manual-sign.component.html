@@ -18,15 +18,18 @@
           <div class="sidenav-content" fusePerfectScrollbar fxFlex>
             <div *fuseIfOnDom [@animateStagger]="{value:'50'}">
               <div class="chat-list" fxLayout="column">
-                <button mat-button class="contact py-4 px-8"
-                  *ngFor="let doc of AllUnSignedDocuments | filter: searchText" (click)="loadSelectedDocument(doc)"
-                  ngClass="{'unread':contact.unread}" [@animate]="{value:'*',params:{y:'100%'}}"
+                <button mat-button class="contact py-4 px-8" *ngFor="let doc of AllUnSignedDocuments | filter: searchText"
+                  (click)="loadSelectedDocument(doc)" ngClass="{'unread':contact.unread}" [@animate]="{value:'*',params:{y:'100%'}}"
                   [style.background-color]="selectID==doc.ID?'lightgrey':'white'">
                   <div fxLayout="row" fxLayoutAlign="start center">
                     <div fxLayout="column" fxFlex>
-                      <div class="contact-name">{{doc.INV_NAME}}</div>
+                      <div class="contact-name">{{doc.INV_NAME}}
+                        <span style="margin-left: 50px;">
+                          {{doc.INVOICE_NAME.split("_").length>4?doc.INVOICE_NAME.split("_")[doc.INVOICE_NAME.split("_").length-1].split(".")[0]:''}}
+                        </span>
+                      </div>
                       <div class="contact-last-message-time">
-                        {{doc.DOCTYPE}}  <span style="margin-left: 50px;">{{doc.AREA}}</span>
+                        {{doc.DOCTYPE}} <span style="margin-left: 50px;">{{doc.AREA}}</span>
                       </div>
                     </div>
                   </div>
@@ -49,8 +52,7 @@
           </div>
         </div>
       </mat-card>
-      <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="ProgressBarPostion" color="accent"
-        mode="indeterminate"></mat-progress-spinner>
+      <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="ProgressBarPostion" color="accent" mode="indeterminate"></mat-progress-spinner>
       <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
     </div>
   </div>
