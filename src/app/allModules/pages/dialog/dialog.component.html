@@ -122,8 +122,9 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field color="accent">
-                <input matInput placeholder="Expiry Date" [readonly]="DSSConfigurationData" [matDatepicker]="picker2" formControlName="ExpiryDate"
-                    required>
+                <input matInput placeholder="Expiry Date" [readonly]="!DSSConfigurationData.CONFIG_ID" [matDatepicker]="picker2"
+                    formControlName="ExpiryDate" required>
+                <mat-datepicker-toggle matSuffix [for]="picker2"> </mat-datepicker-toggle>
                 <mat-datepicker #picker2 color="primary"></mat-datepicker>
                 <mat-error *ngIf="ConfigurationFormGroup.get('ExpiryDate').touched && ConfigurationFormGroup.get('ExpiryDate').hasError('required')">
                     Expiry Date is required
