@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { fuseAnimations } from '@fuse/animations';
 import { Observable, Subject } from 'rxjs';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/services/auth.service';
 // import { LoginService } from 'app/services/login.service';
 // import { UserDetails } from 'app/models/user-details';
@@ -25,7 +25,7 @@ import { ForgetPasswordLinkDialogComponent } from '../forget-password-link-dialo
     animations: fuseAnimations
 })
 export class LoginComponent implements OnInit {
-    loginForm: FormGroup;
+    // loginForm: FormGroup;
     navigation: FuseNavigation[] = [];
     authenticationDetails: AuthenticationDetails;
     MenuItems: string[];
@@ -38,7 +38,8 @@ export class LoginComponent implements OnInit {
     action = true;
     setAutoHide = true;
     autoHide = 2000;
-
+    SSOID = '';
+    Message = '';
     addExtraClass: false;
     notificationSnackBarComponent: NotificationSnackBarComponent;
     IsProgressBarVisibile: boolean;
@@ -50,25 +51,14 @@ export class LoginComponent implements OnInit {
         private _router: Router,
         private _authService: AuthService,
         private _menuUpdationService: MenuUpdataionService,
-        // private _loginService: LoginService,
         public dialog: MatDialog,
         public snackBar: MatSnackBar,
-        private router: Router
+        private route: ActivatedRoute
     ) {
-        // override the route reuse strategy
-        this.router.routeReuseStrategy.shouldReuseRoute = function(): boolean {
+        this._router.routeReuseStrategy.shouldReuseRoute = function (): boolean {
             return false;
         };
 
-        // this.router.events.subscribe((evt) => {
-        //   if (evt instanceof NavigationEnd) {
-        //     // trick the Router into believing it's last link wasn't previously loaded
-        //     this.router.navigated = false;
-        //     // if you need to scroll back to top, here is the right place
-        //     window.scrollTo(0, 0);
-        //     console.log('router.events Called');
-        //   }
-        // });
         this._fuseConfigService.config = {
             layout: {
                 navbar: {
@@ -90,40 +80,38 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginForm = this._formBuilder.group({
-            userName: ['', Validators.required],
-            password: ['', Validators.required]
+        this.route.queryParams.subscribe(params => {
+            this.SSOID = params['SSOID'];
+            this.Message = params['Message'];
         });
+        // this.loginForm = this._formBuilder.group({
+        //     userName: ['', Validators.required],
+        //     password: ['', Validators.required]
+        // });
+        if (this.SSOID) {
+            this.LoginClicked();
+        } else {
+            this.notificationSnackBarComponent.openSnackBar(this.Message, SnackBarStatus.danger);
+        }
     }
 
     LoginClicked(): void {
-        if (this.loginForm.valid) {
-            this.IsProgressBarVisibile = true;
-            this._authService.login(this.loginForm.get('userName').value, this.loginForm.get('password').value).subscribe(
-                data => {
-                    this.IsProgressBarVisibile = false;
-                    const dat = data as AuthenticationDetails;
-                    if (data.isChangePasswordRequired === 'Yes') {
-                        this.OpenChangePasswordDialog(dat);
-                    } else {
-                        this.saveUserDetails(dat);
-                    }
-                },
-                err => {
-                    this.IsProgressBarVisibile = false;
-                    console.error(err);
-                    // console.log(err instanceof Object);
-                    this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
-                }
-            );
-            // this._router.navigate(['dashboard']);
-            // this.notificationSnackBarComponent.openSnackBar('Logged in successfully', SnackBarStatus.success);
-        } else {
-            Object.keys(this.loginForm.controls).forEach(key => {
-                const abstractControl = this.loginForm.get(key);
-                abstractControl.markAsDirty();
-            });
-        }
+        this.IsProgressBarVisibile = true;
+        this._authService.ssoLogin(this.SSOID).subscribe(
+            data => {
+                this.IsProgressBarVisibile = false;
+                const dat = data as AuthenticationDetails;
+                this.saveUserDetails(dat);
+            },
+            err => {
+                this.IsProgressBarVisibile = false;
+                console.error(err);
+                // console.log(err instanceof Object);
+                this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+            }
+        );
+        // this._router.navigate(['dashboard']);
+        // this.notificationSnackBarComponent.openSnackBar('Logged in successfully', SnackBarStatus.success);
     }
 
     saveUserDetails(data: AuthenticationDetails): void {
