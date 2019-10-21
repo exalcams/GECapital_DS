@@ -15,7 +15,7 @@ export class AuthService {
   clientId: string;
   constructor(private _httpClient: HttpClient) {
     this.baseAddress = environment.baseAddress;
-    //this.baseAddress = 'http://localhost:4010/';
+    // this.baseAddress = 'http://localhost:4010/';
     this.clientId = environment.clientId;
   }
 
@@ -32,6 +32,16 @@ export class AuthService {
   login(userName: string, password: string): Observable<any> {
     // tslint:disable-next-line:prefer-const
     let data = `grant_type=password&username=${userName}&password=${password}&client_id=${this.clientId}`;
+    return this._httpClient.post<any>(`${this.baseAddress}token`, data, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).pipe(catchError(this.errorHandler));
+  }
+
+  ssoLogin(userName: string): Observable<any> {
+    // tslint:disable-next-line:prefer-const
+    let data = `grant_type=password&username=${userName}&password=${userName}&client_id=${this.clientId}`;
     return this._httpClient.post<any>(`${this.baseAddress}token`, data, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
