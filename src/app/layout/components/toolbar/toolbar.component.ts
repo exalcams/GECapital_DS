@@ -37,7 +37,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
     NotificationCount: number;
     AllNotificationByUserID: UserNotification[] = [];
     SetIntervalID: any;
-
+    baseAddress: string;
     // Private
     private _unsubscribeAll: Subject<any>;
 
@@ -106,7 +106,7 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
         this.CurrentLoggedInUser = 'Support';
         this.CurrentLoggedInUserProfile = 'assets/images/avatars/support.png';
         this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
-
+        this.baseAddress = _authService.baseAddress;
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }
@@ -242,8 +242,9 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
                 localStorage.removeItem('authorizationData');
                 localStorage.removeItem('menuItemsData');
                 this._compiler.clearCache();
-                this._router.navigate(['auth/login']);
+                // this._router.navigate(['auth/login']);
                 this.notificationSnackBarComponent.openSnackBar('Signed out successfully', SnackBarStatus.success);
+                window.location.href = `${this.baseAddress}api/SSO/Start`;
             },
             (err) => {
                 console.error(err);
