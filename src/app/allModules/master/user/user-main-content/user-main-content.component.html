@@ -7,10 +7,10 @@
   <div fxLayout="row" fxLayoutAlign="start">
 
     <mat-form-field class="p-12" fxFlex="50">
-      <input matInput placeholder="User Name" formControlName="userName">
+      <input matInput placeholder="User Name/SSO ID" formControlName="userName">
       <mat-error *ngIf="userMainFormGroup.get('userName').touched &&  userMainFormGroup.get('userName').hasError('required')">
         User
-        Name required</mat-error>
+        Name/SSO ID required</mat-error>
     </mat-form-field>
 
     <mat-form-field class="p-12" fxFlex="50">
@@ -25,8 +25,8 @@
     </mat-form-field>
 
   </div>
-  <div fxLayout="row" fxLayoutAlign="start" *ngIf="!user.UserID">
-    <!-- <mat-icon  style="font-size: 15px;margin-right: -25px">remove_red_eye</mat-icon> -->
+  <!-- <div fxLayout="row" fxLayoutAlign="start" *ngIf="!user.UserID">
+    <mat-icon  style="font-size: 15px;margin-right: -25px">remove_red_eye</mat-icon>
     <mat-form-field class="p-12" fxFlex="50">
       <input matTooltip="Passwords must have minimum One Uppercase letter,three lower case letter,two digit,one special character and
       minimum length of 8 and don't start with digit" type="password" matInput placeholder="Password" formControlName="password">
@@ -51,7 +51,7 @@
       </mat-error>
     </mat-form-field>
 
-  </div>
+  </div> -->
 
   <div fxLayout="row" fxLayoutAlign="start">
 

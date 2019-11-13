@@ -48,14 +48,16 @@ export class UserMainContentComponent implements OnInit, OnChanges {
             roleID: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
             contactNumber: ['', [Validators.pattern]],
-            password: [
-                '',
-                [
-                    Validators.required,
-                    Validators.pattern('(?=.*[a-z].*[a-z].*[a-z])(?=.*[A-Z])(?=.*[0-9].*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}')
-                ]
-            ],
-            confirmPassword: ['', [Validators.required, confirmPasswordValidator]],
+            // password: [
+            //     '',
+            //     [
+            //         Validators.required,
+            //         Validators.pattern('(?=.*[a-z].*[a-z].*[a-z])(?=.*[A-Z])(?=.*[0-9].*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{8,}')
+            //     ]
+            // ],
+            // confirmPassword: ['', [Validators.required, confirmPasswordValidator]],
+            password: [''],
+            confirmPassword: [''],
             displayTitle1: ['', Validators.required],
             displayTitle2: [''],
             profile: ['']

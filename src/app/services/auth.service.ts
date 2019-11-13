@@ -15,7 +15,6 @@ export class AuthService {
   clientId: string;
   constructor(private _httpClient: HttpClient) {
     this.baseAddress = environment.baseAddress;
-    // this.baseAddress = 'http://localhost:4010/';
     this.clientId = environment.clientId;
   }
 
