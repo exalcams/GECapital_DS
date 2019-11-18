@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
     setAutoHide = true;
     autoHide = 2000;
     SSOID = '';
+    token = '';
     Message = '';
     addExtraClass: false;
     notificationSnackBarComponent: NotificationSnackBarComponent;
@@ -82,6 +83,7 @@ export class LoginComponent implements OnInit {
     ngOnInit(): void {
         this.route.queryParams.subscribe(params => {
             this.SSOID = params['SSOID'];
+            this.token = params['token'];
             this.Message = params['Message'];
         });
         // this.loginForm = this._formBuilder.group({
@@ -97,7 +99,7 @@ export class LoginComponent implements OnInit {
 
     LoginClicked(): void {
         this.IsProgressBarVisibile = true;
-        this._authService.ssoLogin(this.SSOID).subscribe(
+        this._authService.ssoLogin(this.SSOID,this.token).subscribe(
             data => {
                 this.IsProgressBarVisibile = false;
                 const dat = data as AuthenticationDetails;
