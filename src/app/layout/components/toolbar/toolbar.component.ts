@@ -242,17 +242,13 @@ export class ToolbarComponent implements OnInit, OnDestroy, OnChanges {
                 localStorage.removeItem('authorizationData');
                 localStorage.removeItem('menuItemsData');
                 this._compiler.clearCache();
-                // this._router.navigate(['auth/login']);
-                this.notificationSnackBarComponent.openSnackBar('Signed out successfully', SnackBarStatus.success);
-                window.location.href = `${this.baseAddress}api/SSO/Start`;
+                this._router.navigate(['auth/logout']);
             },
             (err) => {
                 console.error(err);
                 this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
             }
         );
-        // this._router.navigate(['auth/login']);
-        // this.notificationSnackBarComponent.openSnackBar('Signed out successfully', SnackBarStatus.success);
     }
 
     ChangePasswordClick(): void {

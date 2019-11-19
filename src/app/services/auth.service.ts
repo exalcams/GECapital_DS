@@ -38,9 +38,9 @@ export class AuthService {
     }).pipe(catchError(this.errorHandler));
   }
 
-  ssoLogin(userName: string, token: string): Observable<any> {
+  ssoLogin(token: string): Observable<any> {
     // tslint:disable-next-line:prefer-const
-    let data = `grant_type=password&username=${userName}&password=${token}&client_id=${this.clientId}`;
+    let data = `grant_type=password&username=${token}&password=${token}&client_id=${this.clientId}`;
     return this._httpClient.post<any>(`${this.baseAddress}token`, data, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'

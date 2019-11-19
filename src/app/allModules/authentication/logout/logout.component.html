@@ -1,0 +1,19 @@
+<div id="login" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
+
+  <div id="login-intro" fxFlex fxHide fxShow.gt-xs>
+  </div>
+
+  <div [style.background-color]="'white'" fusePerfectScrollbar
+    [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+
+    <div id="login-form">
+
+      <div class="logo">
+      </div>
+      
+      <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="ProgressBarPostion" color="accent"
+        mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </div>
+  <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
+</div>

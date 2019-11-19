@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.queryParams.subscribe(params => {
-            this.SSOID = params['SSOID'];
+            // this.SSOID = params['SSOID'];
             this.token = params['token'];
             this.Message = params['Message'];
         });
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
         //     userName: ['', Validators.required],
         //     password: ['', Validators.required]
         // });
-        if (this.SSOID) {
+        if (this.token) {
             this.LoginClicked();
         } else {
             this.notificationSnackBarComponent.openSnackBar(this.Message, SnackBarStatus.danger);
@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
 
     LoginClicked(): void {
         this.IsProgressBarVisibile = true;
-        this._authService.ssoLogin(this.SSOID,this.token).subscribe(
+        this._authService.ssoLogin(this.token).subscribe(
             data => {
                 this.IsProgressBarVisibile = false;
                 const dat = data as AuthenticationDetails;

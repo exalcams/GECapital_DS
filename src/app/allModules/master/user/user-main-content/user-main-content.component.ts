@@ -46,7 +46,7 @@ export class UserMainContentComponent implements OnInit, OnChanges {
         this.userMainFormGroup = this._formBuilder.group({
             userName: ['', Validators.required],
             roleID: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]],
+            email: ['', [Validators.email]],
             contactNumber: ['', [Validators.pattern]],
             // password: [
             //     '',
@@ -76,7 +76,7 @@ export class UserMainContentComponent implements OnInit, OnChanges {
                 this.AllRoles.forEach(element => {
                     if (element.RoleID === role) {
                         this.SelectedRole = element.RoleName;
-                        console.log(this.SelectedRole);
+                        // console.log(this.SelectedRole);
                     }
                 });
                 // console.log(this.AllMenuApps);
@@ -108,7 +108,7 @@ export class UserMainContentComponent implements OnInit, OnChanges {
         this.AllRoles.forEach(element => {
             if (element.RoleID === role) {
                 this.SelectedRole = element.RoleName;
-                console.log(this.SelectedRole);
+                // console.log(this.SelectedRole);
             }
         });
     }
@@ -280,11 +280,11 @@ export class UserMainContentComponent implements OnInit, OnChanges {
             this.userMainFormGroup.get('confirmPassword').patchValue(this.user.Password);
 
             const role = this.user.RoleID;
-            console.log(role);
+            // console.log(role);
             this.AllRoles.forEach(element => {
                 if (element.RoleID === role) {
                     this.SelectedRole = element.RoleName;
-                    console.log(this.SelectedRole);
+                    // console.log(this.SelectedRole);
                 }
             });
         } else {

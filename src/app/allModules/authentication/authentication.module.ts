@@ -9,11 +9,16 @@ import { LinkForForgetPasswordComponent } from './link-for-forget-password/link-
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { ForgetPasswordLinkDialogComponent } from './forget-password-link-dialog/forget-password-link-dialog.component';
+import { LogoutComponent } from './logout/logout.component';
 
 const authRoutes: Routes = [
     {
         path: 'login',
         component: LoginComponent
+    },
+    {
+        path: 'logout',
+        component: LogoutComponent
     },
     // {
     //     path: 'changePassword',
@@ -41,6 +46,7 @@ const authRoutes: Routes = [
         LinkForForgetPasswordComponent,
         ChangePasswordDialogComponent,
         ForgetPasswordLinkDialogComponent,
+        LogoutComponent,
     ],
     imports: [
         MatButtonModule,
