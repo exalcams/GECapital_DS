@@ -21,6 +21,7 @@ export class LogoutComponent implements OnInit {
     private _fuseConfigService: FuseConfigService,
     private _authService: AuthService,
     public snackBar: MatSnackBar,
+    private _compiler: Compiler,
   ) {
     this._fuseConfigService.config = {
       layout: {
@@ -51,6 +52,7 @@ export class LogoutComponent implements OnInit {
   }
   RetirectToLogOff(): void {
     // window.location.href = `${this.baseAddress}api/SSO/Start`;
+    this._compiler.clearCache();
     window.location.href = 'https://ssologin.ssogen2.corporate.ge.com/logoff/logoff.jsp';
   }
 
