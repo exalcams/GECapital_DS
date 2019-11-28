@@ -58,12 +58,12 @@ export class ManualSignComponent implements OnInit {
     } else {
       this._router.navigate(['/auth/login']);
     }
-    if (this.authenticationDetails.userRole === 'Administrator') {
-      this.GetAllUnSignedDocuments();
-    } else {
-      this.GetAllUnSignedDocumentsByUser();
-    }
-
+    // if (this.authenticationDetails.userRole === 'Administrator') {
+    //   this.GetAllUnSignedDocuments();
+    // } else {
+    //   this.GetAllUnSignedDocumentsByUser();
+    // }
+    this.GetAllUnSignedDocumentsByUser();
   }
 
   GetAllUnSignedDocuments(): void {
