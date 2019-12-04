@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
         this.notificationSnackBarComponent.openSnackBar('Logged in successfully', SnackBarStatus.success);
         if (data.userRole === 'Administrator') {
             this._router.navigate(['pages/adminDashboard']);
-        } else if (data.userRole === 'SignedUser') {
+        } else if (data.userRole.toLocaleLowerCase() === 'signatory') {
             this._router.navigate(['pages/signedUserDashboard']);
         } else {
             this._router.navigate(['pages/dashboard']);

@@ -20,11 +20,11 @@
             </div>
           </div>
 
-          <!-- <div fxFlex class="TileClass armyBgColor" (click)="tabfive()">
+          <div fxFlex class="TileClass armyBgColor" (click)="tabfive()">
             <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
               <div fxFlex="70%">
                 <h2 class="titleClass">
-                 Un Signed Documents
+                  Un Signed Documents
                 </h2>
               </div>
               <div fxFlex="30%">
@@ -33,7 +33,7 @@
                 </h2>
               </div>
             </div>
-          </div> -->
+          </div>
 
           <div fxFlex class="TileClass primaryBgColor" (click)="tabtwo()">
             <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
@@ -308,7 +308,7 @@
       <!--Signed documnets part ends-->
 
       <!--Un Signed documnets part starts-->
-      <!-- <div class="content" fxLayout="column" *ngIf="tab5">
+      <div class="content" fxLayout="column" *ngIf="tab5">
         <form class="mat-card formGroupStyle" autocomplete="off" fxFlex name="form" [formGroup]="documentFormGroup"
           novalidate>
           <div FxLayout="row" class="formRowStyle" fxLayout.xs="column">
@@ -368,29 +368,58 @@
           <div class="mat-elevation-z8 m-4" fxFlex>
             <table mat-table [dataSource]="UnSignDocumentsDataSource" matSort style="width:100%">
 
+              <ng-container matColumnDef="DOCTYPE">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>DOCTYPE</th>
+                <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
+              </ng-container>
+              
               <ng-container matColumnDef="INV_NAME">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice No </th>
                 <td mat-cell *matCellDef="let row"> {{row.INV_NAME}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="CODE">
+              <ng-container matColumnDef="CONFIG1">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Config1 </th>
                 <td mat-cell *matCellDef="let row"> {{row.CODE}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="DOCTYPE">
+              <ng-container matColumnDef="CONFIG2">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Config2 </th>
                 <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="AREA">
+              <ng-container matColumnDef="CONFIG3">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Config3 </th>
                 <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="SIGNED_AUTHORITY">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Signed Authority </th>
-                <td mat-cell *matCellDef="let row"> {{row.SIGNED_AUTHORITY}} </td>
+              <ng-container matColumnDef="AUTHORITY1">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority1</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY1}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="AUTHORITY2">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority2</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY2}} </td>
+              </ng-container>
+              <ng-container matColumnDef="AUTHORITY3">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority3</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY3}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="AUTHORITY4">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority4</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY4}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="AUTHORITY5">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority5</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY5}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="AUTHORITY6">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority6</th>
+                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY6}} </td>
               </ng-container>
 
               <ng-container matColumnDef="AUTOSIGNED">
@@ -398,10 +427,10 @@
                 <td mat-cell *matCellDef="let row"> {{row.AUTOSIGNED}} </td>
               </ng-container>
 
-              <ng-container matColumnDef="SIGNED_ON">
+              <!-- <ng-container matColumnDef="SIGNED_ON">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> SIGNED_ON </th>
                 <td mat-cell *matCellDef="let row"> {{row.SIGNED_ON | date : 'dd-MM-yyyy hh:mm:ss a'}}</td>
-              </ng-container>
+              </ng-container> -->
 
               <ng-container matColumnDef="View">
                 <th mat-header-cell *matHeaderCellDef> View </th>
@@ -426,7 +455,7 @@
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
           </div>
         </mat-card>
-      </div> -->
+      </div>
       <!--Un Signed documnets part ends-->
 
       <!--Certificate part starts-->

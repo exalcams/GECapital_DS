@@ -44,7 +44,7 @@ export class DialogComponent implements OnInit {
         // Set the defaults
         this.ConfigurationFormGroup = this.formBuilder.group({
             DocumentType: ['', Validators.required],
-            //Plant: ['', Validators.required],
+            // Plant: ['', Validators.required],
             // DocumentType: ['', Validators.required],
             // OutputType: ['', Validators.required],
             AutoSign: ['', Validators.required],
@@ -75,7 +75,7 @@ export class DialogComponent implements OnInit {
         this.GetAllCertificateFromStore();
         this.GetAllAuthoritys();
         if (this.DSSConfigurationData) {
-            console.log(this.DSSConfigurationData);
+            // console.log(this.DSSConfigurationData);
             this.ConfigurationFormGroup.setValue({
                 DocumentType: this.DSSConfigurationData.DOCTYPE,
                 AutoSign: this.DSSConfigurationData.AUTOSIGN === false ? '0' : '1',
@@ -123,7 +123,7 @@ export class DialogComponent implements OnInit {
                 }
             },
             err => {
-                console.log(err);
+                console.error(err);
             }
         );
     }
@@ -169,7 +169,7 @@ export class DialogComponent implements OnInit {
         if (this.AllUserEmails && this.AllUserEmails.length > 0) {
             this.AllUserEmails.forEach(x => (x.IsSelected = false));
             const Priority1User = this.ConfigurationFormGroup.get('Authority1').value;
-            console.log(this.AllUserEmails);
+            // console.log(this.AllUserEmails);
             if (Priority1User) {
                 const p1u = this.AllUserEmails.find(x => x.UserName === Priority1User);
                 if (p1u) {
@@ -269,7 +269,7 @@ export class DialogComponent implements OnInit {
             this.DSSConfigurationData.CONFIG1 = this.ConfigurationFormGroup.get('Config1').value;
             this.DSSConfigurationData.CONFIG2 = this.ConfigurationFormGroup.get('Config2').value;
             this.DSSConfigurationData.CONFIG3 = this.ConfigurationFormGroup.get('Config3').value;
-            this.DSSConfigurationData.AUTOSIGN = this.ConfigurationFormGroup.get('AutoSign').value == 0 ? false : true;
+            this.DSSConfigurationData.AUTOSIGN = this.ConfigurationFormGroup.get('AutoSign').value === 0 ? false : true;
             // this.DSSConfigurationData.AUTHORITY = this.ConfigurationFormGroup.get('SignedAuthority').value;
             this.DSSConfigurationData.CERT_NAME = this.ConfigurationFormGroup.get('CertificateName').value;
             this.DSSConfigurationData.CERT_EX_DT = this.ConfigurationFormGroup.get('ExpiryDate').value;

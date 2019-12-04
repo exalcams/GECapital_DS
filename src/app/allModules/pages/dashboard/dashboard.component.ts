@@ -218,8 +218,8 @@ export class DashboardComponent implements OnInit {
                 this.GetAllDocumentTypes();
                 // this.GetAllOutputTypes();
                 // this.GetAllDocumentOutputTypeMapViews();
-                //this.GetAllNormalUsers();
-                //this.GetAllUserPlantMapViews();
+                // this.GetAllNormalUsers();
+                // this.GetAllUserPlantMapViews();
             }
         } else {
             this._router.navigate(['/auth/login']);

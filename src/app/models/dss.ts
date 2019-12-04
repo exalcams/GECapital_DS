@@ -105,6 +105,7 @@ export class CertificateClass {
 }
 
 export class AuthorityClass {
+    // SSOID: string;
     UserName: string;
     IsSelected: boolean;
 }

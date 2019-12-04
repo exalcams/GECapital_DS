@@ -75,14 +75,29 @@ export class SignedUserDashboardComponent implements OnInit {
     dialogRef: any;
 
     SignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
-    // UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
+    UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
     ConfigurationsDataSource: MatTableDataSource<DSSConfiguration>;
     ExpiredCertificatesDataSource: MatTableDataSource<DSSConfiguration>;
     ErrorDocumentsDataSource: MatTableDataSource<DSSErrorInvoice>;
     SignDocumentsColumns: string[] = ['DOCTYPE', 'INV_NAME', 'CONFIG1', 'CONFIG2', 'CONFIG3', 'SIGNED_AUTHORITY', 'SIGNED_ON', 'View', 'Download'];
     // tslint:disable-next-line:max-line-length
-    //  UnSignDocumentsColumns: string[] = ['INV_NAME', 'CODE', 'DOCTYPE', 'AREA', 'AUTOSIGNED', 'View', 'Download'];
-    ConfigurationsColumns: string[] = [
+    UnSignDocumentsColumns: string[] = [
+        'DOCTYPE',
+        'INV_NAME',
+        'CONFIG1',
+        'CONFIG2',
+        'CONFIG3',
+        'AUTHORITY1',
+        'AUTHORITY2',
+        'AUTHORITY3',
+        'AUTHORITY4',
+        'AUTHORITY5',
+        'AUTHORITY6',
+        'AUTOSIGNED',
+        'View',
+        'Download'
+    ];
+     ConfigurationsColumns: string[] = [
         'DOCTYPE',
         'CONFIG1',
         'CONFIG2',
@@ -198,6 +213,7 @@ export class SignedUserDashboardComponent implements OnInit {
                 // }
                 this.GetDSSStatusCountsByUser(this.UserName);
                 this.GetAllSignedDocumentsByUser(this.UserName);
+                this.GetAllUnSignedDocumentsByUser(this.UserName);
                 this.GetAllExpiredCertificatesByUser(this.UserName);
                 this.GetAllConfigurationsByUser(this.UserName);
                 this.GetAllErrorDocumentsByUser(this.UserName);
@@ -205,8 +221,8 @@ export class SignedUserDashboardComponent implements OnInit {
                 this.GetAllDocumentTypes();
                 // this.GetAllOutputTypes();
                 // this.GetAllDocumentOutputTypeMapViews();
-                //this.GetAllNormalUsers();
-                //this.GetAllUserPlantMapViews();
+                // this.GetAllNormalUsers();
+                // this.GetAllUserPlantMapViews();
             }
         } else {
             this._router.navigate(['/auth/login']);
@@ -274,15 +290,15 @@ export class SignedUserDashboardComponent implements OnInit {
         this.GetAllErrorDocumentsByUser(this.UserName);
         this.ResetControl();
     }
-    // tabfive(): void {
-    //   this.tab1 = false;
-    //   this.tab2 = false;
-    //   this.tab3 = false;
-    //   this.tab4 = false;
-    //   this.tab5 = true;
-    //   this.GetAllUnSignedDocumentsByUser(this.UserName);
-    //   this.ResetControl();
-    // }
+    tabfive(): void {
+      this.tab1 = false;
+      this.tab2 = false;
+      this.tab3 = false;
+      this.tab4 = false;
+      this.tab5 = true;
+      this.GetAllUnSignedDocumentsByUser(this.UserName);
+      this.ResetControl();
+    }
 
     ResetControl(): void {
         this.getDocument = new GetDocument();
@@ -332,27 +348,27 @@ export class SignedUserDashboardComponent implements OnInit {
         );
     }
 
-    // GetAllUnSignedDocumentsByUser(UserName: string): void {
-    //   this.IsProgressBarVisibile = true;
-    //   this.dashboardService
-    //     .GetAllUnSignedDocumentsByUser(UserName)
-    //     .subscribe((data) => {
-    //       if (data) {
-    //         this.AllUnSignedDocument = <DSSInvoice[]>data;
-    //         this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
-    //         this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
-    //         this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
-    //         this.DSSStatusCount.UnSignedDocumnentCount = this.AllUnSignedDocument.length;
-    //       }
-    //       this.IsAllSignedDocumentCompleted = true;
-    //       this.IsProgressBarVisibile = false;
-    //     },
-    //       (err) => {
-    //         console.error(err);
-    //         this.IsAllSignedDocumentCompleted = true;
-    //         this.IsProgressBarVisibile = false;
-    //       });
-    // }
+    GetAllUnSignedDocumentsByUser(UserName: string): void {
+      this.IsProgressBarVisibile = true;
+      this.dashboardService
+        .GetAllUnSignedDocumentsByUser(UserName)
+        .subscribe((data) => {
+          if (data) {
+            this.AllUnSignedDocument = <DSSInvoice[]>data;
+            this.UnSignDocumentsDataSource = new MatTableDataSource(this.AllUnSignedDocument);
+            this.UnSignDocumentsDataSource.paginator = this.UnSignDocumentsPaginator;
+            this.UnSignDocumentsDataSource.sort = this.UnSignDocumentsSort;
+            this.DSSStatusCount.UnSignedDocumnentCount = this.AllUnSignedDocument.length;
+          }
+          this.IsAllSignedDocumentCompleted = true;
+          this.IsProgressBarVisibile = false;
+        },
+          (err) => {
+            console.error(err);
+            this.IsAllSignedDocumentCompleted = true;
+            this.IsProgressBarVisibile = false;
+          });
+    }
 
     GetAllConfigurationsByUser(UserName: string): void {
         this.IsProgressBarVisibile = true;
