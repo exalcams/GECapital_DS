@@ -141,19 +141,19 @@ export class DialogComponent implements OnInit {
     }
 
 
-    GetAllUserEmails(): void {
-        this.dashboardService.GetAllUserEmails().subscribe(
-            data => {
-                this.AllUserEmails = data as AuthorityClass[];
-                if (this.AllUserEmails) {
-                    this.DisableMatOptions();
-                }
-            },
-            err => {
-                console.error(err);
-            }
-        );
-    }
+    // GetAllUserEmails(): void {
+    //     this.dashboardService.GetAllUserEmails().subscribe(
+    //         data => {
+    //             this.AllUserEmails = data as AuthorityClass[];
+    //             if (this.AllUserEmails) {
+    //                 this.DisableMatOptions();
+    //             }
+    //         },
+    //         err => {
+    //             console.error(err);
+    //         }
+    //     );
+    // }
 
     SignedAuthority1Selected(): void {
         this.DisableMatOptions();
@@ -269,7 +269,7 @@ export class DialogComponent implements OnInit {
             this.DSSConfigurationData.CONFIG1 = this.ConfigurationFormGroup.get('Config1').value;
             this.DSSConfigurationData.CONFIG2 = this.ConfigurationFormGroup.get('Config2').value;
             this.DSSConfigurationData.CONFIG3 = this.ConfigurationFormGroup.get('Config3').value;
-            this.DSSConfigurationData.AUTOSIGN = this.ConfigurationFormGroup.get('AutoSign').value === 0 ? false : true;
+            this.DSSConfigurationData.AUTOSIGN = this.ConfigurationFormGroup.get('AutoSign').value === '0' ? false : true;
             // this.DSSConfigurationData.AUTHORITY = this.ConfigurationFormGroup.get('SignedAuthority').value;
             this.DSSConfigurationData.CERT_NAME = this.ConfigurationFormGroup.get('CertificateName').value;
             this.DSSConfigurationData.CERT_EX_DT = this.ConfigurationFormGroup.get('ExpiryDate').value;

@@ -1,13 +1,15 @@
 import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { DashboardService } from 'app/services/dashboard.service';
-import { DSSInvoice, ManualSignResponse } from 'app/models/dss';
+import { DSSInvoice, ManualSignResponse, RejectionView } from 'app/models/dss';
 import { fuseAnimations } from '@fuse/animations';
 import { NotificationSnackBarComponent } from 'app/notifications/notification-snack-bar/notification-snack-bar.component';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationDetails } from 'app/models/master';
 import { Router } from '@angular/router';
 import { SnackBarStatus } from 'app/notifications/notification-snack-bar/notification-snackbar-status-enum';
+import { DialogComponent } from '../dialog/dialog.component';
+import { RejectionReasonDialogComponent } from '../rejection-reason-dialog/rejection-reason-dialog.component';
 
 @Component({
   selector: 'app-manual-sign',
@@ -35,13 +37,19 @@ export class ManualSignComponent implements OnInit {
     private _dashboardService: DashboardService,
     public snackBar: MatSnackBar,
     private sanitizer: DomSanitizer,
-    private _router: Router
+    private _router: Router,
+    private dialog: MatDialog,
   ) {
     this.authenticationDetails = new AuthenticationDetails();
     this.searchText = '';
     this.SelectedDocument = new DSSInvoice();
     this.notificationSnackBarComponent = new NotificationSnackBarComponent(this.snackBar);
     this.IsProgressBarVisibile = false;
+  }
+
+  ResetSelection(): void {
+    this.selectID = 0;
+    this.SelectedDocument = new DSSInvoice();
   }
 
   ngOnInit(): void {
@@ -114,34 +122,83 @@ export class ManualSignComponent implements OnInit {
   }
 
   SignClicked(): void {
+    if (this.SelectedDocument && this.SelectedDocument.ID && this.SelectedDocument.INVOICE_NAME) {
+      this.IsProgressBarVisibile = true;
+      this._dashboardService.ManualSignProcessUsingCert(this.SelectedDocument.ID, this.SelectedDocument.INVOICE_NAME, this.UserID).
+        subscribe((data) => {
+          this.SignResponse = data as ManualSignResponse;
+          if (this.SignResponse) {
+            this.IsProgressBarVisibile = false;
+            this.notificationSnackBarComponent.openSnackBar(this.SignResponse.StatusMessage, SnackBarStatus.success);
+            document.getElementById('iframeforSign').setAttribute('src', '');
+            this.ResetSelection();
+            this.GetAllUnSignedDocumentsByUser();
+          }
+          else {
+            this.IsProgressBarVisibile = false;
+            this.notificationSnackBarComponent.openSnackBar(this.SignResponse.StatusMessage, SnackBarStatus.danger);
+            document.getElementById('iframeforSign').setAttribute('src', '');
+            this.ResetSelection();
+            this.GetAllUnSignedDocumentsByUser();
+          }
+        },
+          (err) => {
+            console.error(err);
+            this.IsProgressBarVisibile = false;
+            this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
+            document.getElementById('iframeforSign').setAttribute('src', '');
+            this.GetAllUnSignedDocumentsByUser();
+          });
+    } else {
+      this.notificationSnackBarComponent.openSnackBar('Please select a document', SnackBarStatus.danger);
+    }
+
+  }
+
+  RejectClicked(): void {
+    if (this.SelectedDocument && this.SelectedDocument.ID && this.SelectedDocument.INVOICE_NAME) {
+      this.OpenRejectionResonDialog();
+    } else {
+      this.notificationSnackBarComponent.openSnackBar('Please select a document', SnackBarStatus.danger);
+    }
+  }
+
+  OpenRejectionResonDialog(): void {
+    const dialogConfig: MatDialogConfig = {
+      data: null,
+      panelClass: 'rejection-reason-dialog'
+    };
+    const dialogRef = this.dialog.open(RejectionReasonDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const reason: string = result as string;
+        this.RejectSelectedDocument(reason);
+      }
+    });
+  }
+
+  RejectSelectedDocument(reason: string): void {
+    const rejectionView: RejectionView = new RejectionView();
+    rejectionView.ID = this.SelectedDocument.ID;
+    rejectionView.INVOICE_NAME = this.SelectedDocument.INVOICE_NAME;
+    rejectionView.REJECTED_BY = this.UserName;
+    rejectionView.REASON_FOR_REJECTION = reason;
     this.IsProgressBarVisibile = true;
-    this._dashboardService.ManualSignProcessUsingCert(this.SelectedDocument.ID, this.SelectedDocument.INVOICE_NAME, this.UserID).
+    this._dashboardService.RejectSelectedDocument(rejectionView).
       subscribe((data) => {
-        this.SignResponse = data as ManualSignResponse;
-        if (this.SignResponse) {
-          this.IsProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar(this.SignResponse.StatusMessage, SnackBarStatus.success);
-          this.SaveSucceed.emit('success');
-          document.getElementById( 'iframeforSign' ).setAttribute( 'src', '' );
-          this.GetAllUnSignedDocumentsByUser();
-        }
-        else {
-          this.IsProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar(this.SignResponse.StatusMessage, SnackBarStatus.danger);
-          this.ShowProgressBarEvent.emit('hide');
-          document.getElementById( 'iframeforSign' ).setAttribute( 'src', '' );
-          this.GetAllUnSignedDocumentsByUser();
-        }
+        this.IsProgressBarVisibile = false;
+        this.notificationSnackBarComponent.openSnackBar('Rejected successfully', SnackBarStatus.success);
+        document.getElementById('iframeforSign').setAttribute('src', '');
+        this.ResetSelection();
+        this.GetAllUnSignedDocumentsByUser();
       },
         (err) => {
           console.error(err);
           this.IsProgressBarVisibile = false;
-          this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? 'Something went wrong' : err, SnackBarStatus.danger);
-          this.ShowProgressBarEvent.emit('hide');
-          document.getElementById( 'iframeforSign' ).setAttribute( 'src', '' );
+          this.notificationSnackBarComponent.openSnackBar(err instanceof Object ? err.error ? err.error : 'Something went wrong' : err, SnackBarStatus.danger);
+          document.getElementById('iframeforSign').setAttribute('src', '');
           this.GetAllUnSignedDocumentsByUser();
         });
-
   }
 
 }

@@ -18,8 +18,9 @@
           <div class="sidenav-content" fusePerfectScrollbar fxFlex>
             <div *fuseIfOnDom [@animateStagger]="{value:'50'}">
               <div class="chat-list" fxLayout="column">
-                <button mat-button class="contact py-4 px-8" *ngFor="let doc of AllUnSignedDocuments | filter: searchText"
-                  (click)="loadSelectedDocument(doc)" ngClass="{'unread':contact.unread}" [@animate]="{value:'*',params:{y:'100%'}}"
+                <button mat-button class="contact py-4 px-8"
+                  *ngFor="let doc of AllUnSignedDocuments | filter: searchText" (click)="loadSelectedDocument(doc)"
+                  ngClass="{'unread':contact.unread}" [@animate]="{value:'*',params:{y:'100%'}}"
                   [style.background-color]="selectID==doc.ID?'lightgrey':'white'">
                   <div fxLayout="row" fxLayoutAlign="start center">
                     <div fxLayout="column" fxFlex>
@@ -43,16 +44,21 @@
         </div>
         <div fxFlex="60" fxLayout="column">
           <div fxLayout="row" fxLayoutAlign="start" fxFlex="1 0 auto">
-            <iframe id="iframeforSign" *ngIf="SelectedDocument?.ID" style="width:90vw;height:74vh;" [src]="DSSConfigurationData"></iframe>
+            <iframe id="iframeforSign" *ngIf="SelectedDocument?.ID" style="width:90vw;height:74vh;"
+              [src]="DSSConfigurationData"></iframe>
           </div>
-          <div fxLayout="row" class="m-8" fxLayoutAlign="end">
+          <div fxLayout="row" class="m-8" fxLayoutAlign="space-between center">
+            <button mat-raised-button type="button" color="warn" (click)="RejectClicked()" style="margin-right:10px">
+              Reject
+            </button>
             <button mat-raised-button type="button" color="accent" (click)="SignClicked()" style="margin-right:10px">
               Sign
             </button>
           </div>
         </div>
       </mat-card>
-      <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="ProgressBarPostion" color="accent" mode="indeterminate"></mat-progress-spinner>
+      <mat-progress-spinner *ngIf="IsProgressBarVisibile" class="ProgressBarPostion" color="accent"
+        mode="indeterminate"></mat-progress-spinner>
       <div id="overlay" *ngIf="IsProgressBarVisibile"></div>
     </div>
   </div>

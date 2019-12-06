@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-import { GetDocument, DSSConfiguration, DSSInvoice, DSSStatusCount, CertificateClass, DSSErrorInvoice, UserByPlant, ErrorInvoice, ManualSignResponse, AuthorityClass } from 'app/models/dss';
+import { GetDocument, DSSConfiguration, DSSInvoice, DSSStatusCount, CertificateClass, DSSErrorInvoice, UserByPlant, ErrorInvoice, ManualSignResponse, AuthorityClass, RejectionView } from 'app/models/dss';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
@@ -88,7 +88,10 @@ export class DashboardService {
     return this._httpClient.get<DSSInvoice[]>(`${this.baseUrl}api/ESigner/GetAllUnSignedDocuments`)
       .pipe(catchError(this.errorHandler));
   }
-
+  GetAllRejectedDocuments(): Observable<DSSInvoice[] | string> {
+    return this._httpClient.get<DSSInvoice[]>(`${this.baseUrl}api/ESigner/GetAllRejectedDocuments`)
+      .pipe(catchError(this.errorHandler));
+  }
   //  GetAllInvoicesBasedOnDate(DocumentTypeName: string, FROMDATE: string, TODATE: string): Observable<DSSInvoice[] | string> {
   GetAllInvoicesBasedOnDate(getDocument: GetDocument): Observable<DSSInvoice[] | string> {
     return this._httpClient.post<DSSInvoice[]>(`${this.baseUrl}api/ESigner/GetAllInvoicesBasedOnDate`,
@@ -209,6 +212,11 @@ export class DashboardService {
       .pipe(catchError(this.errorHandler));
   }
 
+  GetAllRejectedDocumentsByUser(UserName: string): Observable<DSSInvoice[] | string> {
+    return this._httpClient.get<DSSInvoice[]>(`${this.baseUrl}api/ESigner/GetAllRejectedDocumentsByUser?UserName=${UserName}`)
+      .pipe(catchError(this.errorHandler));
+  }
+
   // GetAllInvoicesBasedOnDateByUser(DocumentTypeName: string, FROMDATE: string, TODATE: string, UserName: string): Observable<DSSInvoice[] | string> {
   GetAllInvoicesBasedOnDateByUser(getDocument: GetDocument): Observable<DSSInvoice[] | string> {
     return this._httpClient.post<DSSInvoice[]>(`${this.baseUrl}api/ESigner/GetAllInvoicesBasedOnDateByUser`,
@@ -264,9 +272,20 @@ export class DashboardService {
       .pipe(catchError(this.errorHandler));
   }
 
+
   ManualSignProcessUsingCert(ID: number, Filename: string, UserID: number): Observable<ManualSignResponse | string> {
     return this._httpClient.get<ManualSignResponse>(`${this.baseUrl}api/ESigner/ManualSignProcessUsingCert?ID=${ID}&Filename=${Filename}&UserID=${UserID}`)
       .pipe(catchError(this.errorHandler));
   }
 
+  RejectSelectedDocument(rejectionView: RejectionView): Observable<any> {
+    return this._httpClient.post<any>(`${this.baseUrl}api/ESigner/RejectSelectedDocument`,
+      rejectionView,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      })
+      .pipe(catchError(this.errorHandler));
+  }
 }

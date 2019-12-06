@@ -18,6 +18,10 @@ export class DSSInvoice {
     AUTHORITY4: string;
     AUTHORITY5: string;
     AUTHORITY6: string;
+    ISREJECTED: boolean;
+    REJECTED_BY: string;
+    REJECTED_ON?: Date;
+    REASON_FOR_REJECTION: string;
 }
 export class DSSErrorInvoice {
     ID: number;
@@ -93,10 +97,11 @@ export class UserByPlantView {
 }
 export class DSSStatusCount {
     SignedDocumnentCount: number;
+    UnSignedDocumnentCount: number;
+    RejectedDocumnentCount: number;
     ErrorDocumentCount: number;
     ConfigurationCount: number;
     ExpiryCerificateCount: number;
-    UnSignedDocumnentCount: number;
 }
 
 export class CertificateClass {
@@ -105,8 +110,8 @@ export class CertificateClass {
 }
 
 export class AuthorityClass {
-    // SSOID: string;
     UserName: string;
+    Name: string;
     IsSelected: boolean;
 }
 
@@ -124,4 +129,13 @@ export class GetDocument {
 export class ManualSignResponse {
     StatusMessage: string;
     Status: string;
+}
+
+export class RejectionView {
+    ID: number;
+    INVOICE_NAME: string;
+    ISREJECTED: boolean;
+    REJECTED_BY: string;
+    REJECTED_ON?: Date;
+    REASON_FOR_REJECTION: string;
 }

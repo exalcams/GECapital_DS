@@ -45,6 +45,7 @@ export class UserMainContentComponent implements OnInit, OnChanges {
     ) {
         this.userMainFormGroup = this._formBuilder.group({
             userName: ['', Validators.required],
+            Name: ['', Validators.required],
             roleID: ['', Validators.required],
             email: ['', [Validators.email]],
             contactNumber: ['', [Validators.pattern]],
@@ -141,6 +142,7 @@ export class UserMainContentComponent implements OnInit, OnChanges {
                     if (result) {
                         this.ShowProgressBarEvent.emit('show');
                         this.user.UserName = this.userMainFormGroup.get('userName').value;
+                        this.user.Name = this.userMainFormGroup.get('Name').value;
                         this.user.RoleID = this.userMainFormGroup.get('roleID').value;
                         this.user.Email = this.userMainFormGroup.get('email').value;
                         this.user.ContactNumber = this.userMainFormGroup.get('contactNumber').value;
@@ -181,6 +183,7 @@ export class UserMainContentComponent implements OnInit, OnChanges {
                         this.ShowProgressBarEvent.emit('show');
                         this.user = new UserWithRole();
                         this.user.UserName = this.userMainFormGroup.get('userName').value;
+                        this.user.Name = this.userMainFormGroup.get('Name').value;
                         this.user.RoleID = this.userMainFormGroup.get('roleID').value;
                         this.user.Email = this.userMainFormGroup.get('email').value;
                         this.user.ContactNumber = this.userMainFormGroup.get('contactNumber').value;
@@ -231,6 +234,7 @@ export class UserMainContentComponent implements OnInit, OnChanges {
                     if (result) {
                         this.ShowProgressBarEvent.emit('show');
                         this.user.UserName = this.userMainFormGroup.get('userName').value;
+                        this.user.Name = this.userMainFormGroup.get('Name').value;
                         this.user.RoleID = this.userMainFormGroup.get('roleID').value;
                         this.user.Email = this.userMainFormGroup.get('email').value;
                         this.user.ContactNumber = this.userMainFormGroup.get('contactNumber').value;
@@ -271,6 +275,7 @@ export class UserMainContentComponent implements OnInit, OnChanges {
         this.user = this.currentSelectedUser;
         if (this.user) {
             this.userMainFormGroup.get('userName').patchValue(this.user.UserName);
+            this.userMainFormGroup.get('Name').patchValue(this.user.Name);
             this.userMainFormGroup.get('roleID').patchValue(this.user.RoleID);
             this.userMainFormGroup.get('email').patchValue(this.user.Email);
             this.userMainFormGroup.get('contactNumber').patchValue(this.user.ContactNumber);

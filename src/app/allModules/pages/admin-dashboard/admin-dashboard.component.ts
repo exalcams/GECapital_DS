@@ -54,6 +54,7 @@ export class AdminDashboardComponent implements OnInit {
     DSSStatusCount: DSSStatusCount = new DSSStatusCount();
     AllSignedDocument: DSSInvoice[] = [];
     AllUnSignedDocument: DSSInvoice[] = [];
+    AllRejectedDocument: DSSInvoice[] = [];
     AllConfigurations: DSSConfiguration[] = [];
     AllExpiredCertificates: DSSConfiguration[] = [];
     AllErrorDocuments: ErrorInvoice[] = [];
@@ -75,6 +76,7 @@ export class AdminDashboardComponent implements OnInit {
 
     SignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
     UnSignDocumentsDataSource: MatTableDataSource<DSSInvoice>;
+    RejectedDocumentsDataSource: MatTableDataSource<DSSInvoice>;
     ConfigurationsDataSource: MatTableDataSource<DSSConfiguration>;
     ExpiredCertificatesDataSource: MatTableDataSource<DSSConfiguration>;
     ErrorDocumentsDataSource: MatTableDataSource<DSSErrorInvoice>;
@@ -92,6 +94,24 @@ export class AdminDashboardComponent implements OnInit {
         'AUTHORITY5',
         'AUTHORITY6',
         'AUTOSIGNED',
+        'View',
+        'Download'
+    ];
+    RejectedDocumentsColumns: string[] = [
+        'DOCTYPE',
+        'INV_NAME',
+        'CONFIG1',
+        'CONFIG2',
+        'CONFIG3',
+        'AUTHORITY1',
+        'AUTHORITY2',
+        'AUTHORITY3',
+        'AUTHORITY4',
+        'AUTHORITY5',
+        'AUTHORITY6',
+        'REJECTED_BY',
+        'REJECTED_ON',
+        'REASON_FOR_REJECTION',
         'View',
         'Download'
     ];
@@ -145,12 +165,14 @@ export class AdminDashboardComponent implements OnInit {
 
     @ViewChild(MatPaginator) SignDocumentsPaginator: MatPaginator;
     @ViewChild(MatPaginator) UnSignDocumentsPaginator: MatPaginator;
+    @ViewChild(MatPaginator) RejectedDocumentsPaginator: MatPaginator;
     @ViewChild(MatPaginator) ConfigurationsPaginator: MatPaginator;
     @ViewChild(MatPaginator) ExpiredCertificatesPaginator: MatPaginator;
     @ViewChild(MatPaginator) ErrorDocumentsPaginator: MatPaginator;
 
     @ViewChild(MatSort) SignDocumentsSort: MatSort;
     @ViewChild(MatSort) UnSignDocumentsSort: MatSort;
+    @ViewChild(MatSort) RejectedDocumentsSort: MatSort;
     @ViewChild(MatSort) ConfigurationsSort: MatSort;
     @ViewChild(MatSort) ExpiredCertificatesSort: MatSort;
     @ViewChild(MatSort) ErrorDocumentsSort: MatSort;
@@ -160,6 +182,7 @@ export class AdminDashboardComponent implements OnInit {
     public tab3: boolean;
     public tab4: boolean;
     public tab5: boolean;
+    public tab6: boolean;
     IsProgressBarVisibile: boolean;
     IsDSSStatusCountCompleted: boolean;
     IsAllSignedDocumentCompleted: boolean;
@@ -185,6 +208,7 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = false;
         this.tab4 = false;
         this.tab5 = false;
+        this.tab6 = false;
         this.documentFormGroup = this._formBuilder.group({
             // FromInvoice: ['', Validators.pattern],
             // ToInvoice: ['', Validators.pattern],
@@ -221,10 +245,10 @@ export class AdminDashboardComponent implements OnInit {
             } else {
                 this.GetDSSStatusCounts();
                 this.GetAllSignedDocument();
-                this.GetAllUnSignedDocument();
-                this.GetAllConfigurations();
-                this.GetAllErrorDocuments();
-                this.GetAllExpiredCertificates();
+                // this.GetAllUnSignedDocument();
+                // this.GetAllConfigurations();
+                // this.GetAllErrorDocuments();
+                // this.GetAllExpiredCertificates();
                 // this.GetAllDocumentTypeNames();
                 // this.GetAllPlants();
                 this.GetAllDocumentTypes();
@@ -259,6 +283,7 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = false;
         this.tab4 = false;
         this.tab5 = false;
+        this.tab6 = false;
         this.GetAllSignedDocument();
         this.ResetControl();
     }
@@ -268,6 +293,7 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = false;
         this.tab4 = false;
         this.tab5 = false;
+        this.tab6 = false;
         this.GetAllConfigurations();
         this.ResetControl();
     }
@@ -277,6 +303,7 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = true;
         this.tab4 = false;
         this.tab5 = false;
+        this.tab6 = false;
         this.GetAllExpiredCertificates();
         this.ResetControl();
     }
@@ -286,6 +313,7 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = false;
         this.tab4 = true;
         this.tab5 = false;
+        this.tab6 = false;
         this.GetAllErrorDocuments();
         this.ResetControl();
     }
@@ -295,7 +323,18 @@ export class AdminDashboardComponent implements OnInit {
         this.tab3 = false;
         this.tab4 = false;
         this.tab5 = true;
+        this.tab6 = false;
         this.GetAllUnSignedDocument();
+        this.ResetControl();
+    }
+    tabsix(): void {
+        this.tab1 = false;
+        this.tab2 = false;
+        this.tab3 = false;
+        this.tab4 = false;
+        this.tab5 = false;
+        this.tab6 = true;
+        this.GetAllRejectedDocuments();
         this.ResetControl();
     }
     ResetControl(): void {
@@ -366,6 +405,25 @@ export class AdminDashboardComponent implements OnInit {
                 (err) => {
                     console.error(err);
                     this.IsAllUnSignedDocumentCompleted = true;
+                    this.IsProgressBarVisibile = false;
+                });
+    }
+    GetAllRejectedDocuments(): void {
+        this.IsProgressBarVisibile = true;
+        this.dashboardService
+            .GetAllRejectedDocuments()
+            .subscribe((data) => {
+                if (data) {
+                    this.AllRejectedDocument = <DSSInvoice[]>data;
+                    this.RejectedDocumentsDataSource = new MatTableDataSource(this.AllRejectedDocument);
+                    this.RejectedDocumentsDataSource.paginator = this.RejectedDocumentsPaginator;
+                    this.RejectedDocumentsDataSource.sort = this.RejectedDocumentsSort;
+                    this.DSSStatusCount.RejectedDocumnentCount = this.AllRejectedDocument.length;
+                }
+                this.IsProgressBarVisibile = false;
+            },
+                (err) => {
+                    console.error(err);
                     this.IsProgressBarVisibile = false;
                 });
     }
@@ -788,14 +846,24 @@ export class AdminDashboardComponent implements OnInit {
             this.SignDocumentsDataSource.paginator.firstPage();
         }
     }
-    // applyFilterUnSign(filterValue: string): void {
-    //   this.UnSignDocumentsDataSource.filter = filterValue.trim().toLowerCase();
+    applyFilterUnSign(filterValue: string): void {
+        this.UnSignDocumentsDataSource.filter = filterValue.trim().toLowerCase();
 
-    //   if (this.UnSignDocumentsDataSource.paginator) {
-    //     this.UnSignDocumentsDataSource.paginator.firstPage();
-    //   }
+        if (this.UnSignDocumentsDataSource.paginator) {
+            this.UnSignDocumentsDataSource.paginator.firstPage();
+        }
 
-    // }
+    }
+
+    applyFilterRej(filterValue: string): void {
+        this.RejectedDocumentsDataSource.filter = filterValue.trim().toLowerCase();
+
+        if (this.RejectedDocumentsDataSource.paginator) {
+            this.RejectedDocumentsDataSource.paginator.firstPage();
+        }
+
+    }
+
     applyFilterExp(filterValue: string): void {
         this.ExpiredCertificatesDataSource.filter = filterValue.trim().toLowerCase();
 

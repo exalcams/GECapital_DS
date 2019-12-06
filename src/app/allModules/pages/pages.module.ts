@@ -55,6 +55,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ConfigUserUpdateDialogComponent } from './config-user-update-dialog/config-user-update-dialog.component';
 import { ManualSignComponent } from './manual-sign/manual-sign.component';
 import { SignedUserDashboardComponent } from './signed-user-dashboard/signed-user-dashboard.component';
+import { RejectionReasonDialogComponent } from './rejection-reason-dialog/rejection-reason-dialog.component';
 
 const routes = [
     {
@@ -140,9 +141,15 @@ const routes = [
         AdminDashboardComponent,
         ConfigUserUpdateDialogComponent,
         ManualSignComponent,
-        SignedUserDashboardComponent
+        SignedUserDashboardComponent,
+        RejectionReasonDialogComponent
     ],
     providers: [DashboardService],
-    entryComponents: [DialogComponent, PdfDialogComponent, ConfigUserUpdateDialogComponent]
+    entryComponents: [
+        DialogComponent,
+        PdfDialogComponent,
+        ConfigUserUpdateDialogComponent,
+        RejectionReasonDialogComponent
+    ]
 })
-export class PagesModule {}
+export class PagesModule { }

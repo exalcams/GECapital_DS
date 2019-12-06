@@ -84,6 +84,9 @@ dashboard {
   .dangerBgColor {
     background-image: linear-gradient(to right top, #d10c25, #de353e, #ea5057, #f46870, #fd7f88) !important;
   }
+  .rejectedColor {
+    background-image: linear-gradient(to right top, #a68b0a, #c07a02, #d7651c, #e94938, #f42259);
+  }
 
   .primaryColor {
     color: #337ab7 !important;

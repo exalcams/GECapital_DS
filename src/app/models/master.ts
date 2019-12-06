@@ -4,6 +4,7 @@ export class UserWithRole {
     UserID: number;
     RoleID: number;
     UserName: string;
+    Name: string;
     UserType: string;
     Email: string;
     ContactNumber: string;
