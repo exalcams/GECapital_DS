@@ -27,7 +27,8 @@ import {
     DocumentTypeView,
     PlantView,
     DocumentOutputTypeMapView,
-    UserPlantMapView
+    UserPlantMapView,
+    UserView
 } from 'app/models/master';
 import { Router } from '@angular/router';
 import { DashboardService } from 'app/services/dashboard.service';
@@ -65,6 +66,7 @@ export class AdminDashboardComponent implements OnInit {
     AllFilteredOutputTypes: OutputTypeView[] = [];
     AllDocumentOutputTypeMapView: DocumentOutputTypeMapView[] = [];
     AllUsers: string[] = [];
+    AllUserViews: UserView[] = [];
     AllFilteredUsers: string[] = [];
     AllUserPlantMapViews: UserPlantMapView[] = [];
     documentFormGroup: FormGroup;
@@ -254,6 +256,7 @@ export class AdminDashboardComponent implements OnInit {
                 this.GetAllDocumentTypes();
                 // this.GetAllOutputTypes();
                 // this.GetAllDocumentOutputTypeMapViews();
+                this.GetAllUserViews();
                 this.GetAllNormalUsers();
                 // this.GetAllUserPlantMapViews();
                 // this.SetIntervalID = setInterval(() => {
@@ -584,6 +587,29 @@ export class AdminDashboardComponent implements OnInit {
             this.AllFilteredOutputTypes = this.AllOutputTypes;
         }
     }
+
+    GetAllUserViews(): void {
+        this.masterService.GetAllUserViews().subscribe(
+            data => {
+                if (data) {
+                    this.AllUserViews = data as UserView[];
+                }
+            },
+            err => {
+                console.error(err);
+            }
+        );
+    }
+    GetUserNameBySSO(SSO: string): string {
+        if (this.AllUserViews && this.AllUserViews.length && this.AllUserViews.length > 0) {
+            const usr = this.AllUserViews.filter(x => x.UserName === SSO)[0];
+            if (usr) {
+                return `${usr.UserName} (${usr.Name})`;
+            }
+        }
+        return SSO;
+    }
+
     GetAllNormalUsers(): void {
         this.masterService.GetAllNormalUsers().subscribe(
             data => {

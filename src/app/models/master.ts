@@ -197,6 +197,10 @@ export class UserNotification {
     CreatedOn: Date;
     ModifiedOn?: Date;
 }
+export class UserView {
+    UserName: string;
+    Name: string;
+}
 
 
 

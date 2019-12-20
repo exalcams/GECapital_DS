@@ -6,13 +6,13 @@
         <div class="container" fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign="center"
           fxLayoutGap="10px" fxLayoutGap.xs="10">
           <div fxFlex class="TileClass successBgColor" (click)="tabone()">
-            <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
-              <div fxFlex="70%">
+            <div class="container" fxLayout="column" fxLayoutAlign="start" fxFlex>
+              <div fxFlex fxLayoutAlign="center" fxFlex="1 0 auto">
                 <h2 class="titleClass">
                   Signed Documents
                 </h2>
               </div>
-              <div fxFlex="30%">
+              <div fxFlex fxLayoutAlign="center">
                 <h2 class="subTitleClass">
                   {{DSSStatusCount?.SignedDocumnentCount}}
                 </h2>
@@ -21,13 +21,13 @@
           </div>
 
           <div fxFlex class="TileClass armyBgColor" (click)="tabfive()">
-            <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
-              <div fxFlex="70%">
+            <div class="container" fxLayout="column" fxLayoutAlign="start" fxFlex>
+              <div fxFlex fxLayoutAlign="center" fxFlex="1 0 auto">
                 <h2 class="titleClass">
                   Un Signed Documents
                 </h2>
               </div>
-              <div fxFlex="30%">
+              <div fxFlex fxLayoutAlign="center">
                 <h2 class="subTitleClass">
                   {{DSSStatusCount?.UnSignedDocumnentCount}}
                 </h2>
@@ -36,13 +36,13 @@
           </div>
 
           <div fxFlex class="TileClass rejectedColor" (click)="tabsix()">
-            <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
-              <div fxFlex="70%">
+            <div class="container" fxLayout="column" fxLayoutAlign="start" fxFlex>
+              <div fxFlex fxLayoutAlign="center" fxFlex="1 0 auto">
                 <h2 class="titleClass">
                   Rejected Documents
                 </h2>
               </div>
-              <div fxFlex="30%">
+              <div fxFlex fxLayoutAlign="center">
                 <h2 class="subTitleClass">
                   {{DSSStatusCount?.RejectedDocumnentCount}}
                 </h2>
@@ -51,13 +51,13 @@
           </div>
 
           <div fxFlex class="TileClass primaryBgColor" (click)="tabtwo()">
-            <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
-              <div fxFlex="70%">
+            <div class="container" fxLayout="column" fxLayoutAlign="start" fxFlex>
+              <div fxLayout fxLayoutAlign="center" fxFlex="1 0 auto">
                 <h2 class="titleClass">
                   Certificates
                 </h2>
               </div>
-              <div fxFlex="30%">
+              <div fxLayout fxLayoutAlign="center">
                 <h2 class="subTitleClass">
                   {{DSSStatusCount?.ConfigurationCount}}
                 </h2>
@@ -81,13 +81,13 @@
           </div> -->
 
           <div fxFlex class="TileClass dangerBgColor" (click)="tabfour()">
-            <div class="container" fxLayout fxLayoutAlign="center" fxLayoutGap="10px">
-              <div fxFlex="70%">
+            <div class="container" fxLayout="column" fxLayoutAlign="start" fxFlex>
+              <div fxFlex fxLayoutAlign="center" fxFlex="1 0 auto">
                 <h2 class="titleClass">
                   Error Documents
                 </h2>
               </div>
-              <div fxFlex="30%">
+              <div fxFlex fxLayoutAlign="center">
                 <h2 class="subTitleClass">
                   {{DSSStatusCount?.ErrorDocumentCount}}
                 </h2>
@@ -284,7 +284,7 @@
 
               <ng-container matColumnDef="SIGNED_AUTHORITY">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Signed Authority </th>
-                <td mat-cell *matCellDef="let row"> {{row.SIGNED_AUTHORITY}} </td>
+                <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.SIGNED_AUTHORITY)}} </td>
               </ng-container>
 
               <ng-container matColumnDef="SIGNED_ON">
@@ -383,109 +383,9 @@
             <input matInput (keyup)="applyFilterUnSign($event.target.value)" placeholder="Search">
           </mat-form-field>
           <div class="mat-elevation-z8 m-4" fxFlex>
-            <table mat-table [dataSource]="UnSignDocumentsDataSource" matSort style="width:100%">
-
-              <ng-container matColumnDef="DOCTYPE">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>DOCTYPE</th>
-                <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="INV_NAME">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice No </th>
-                <td mat-cell *matCellDef="let row"> {{row.INV_NAME}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="CONFIG1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Config1 </th>
-                <td mat-cell *matCellDef="let row"> {{row.CODE}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="CONFIG2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Config2 </th>
-                <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="CONFIG3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Config3 </th>
-                <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="AUTHORITY1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority1</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY1}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="AUTHORITY2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority2</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY2}} </td>
-              </ng-container>
-              <ng-container matColumnDef="AUTHORITY3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority3</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY3}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="AUTHORITY4">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority4</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY4}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="AUTHORITY5">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority5</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY5}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="AUTHORITY6">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority6</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY6}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="AUTOSIGNED">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> AutoSigned </th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTOSIGNED}} </td>
-              </ng-container>
-
-              <!-- <ng-container matColumnDef="SIGNED_ON">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> SIGNED_ON </th>
-                <td mat-cell *matCellDef="let row"> {{row.SIGNED_ON | date : 'dd-MM-yyyy hh:mm:ss a'}}</td>
-              </ng-container> -->
-
-              <ng-container matColumnDef="View">
-                <th mat-header-cell *matHeaderCellDef> View </th>
-                <td mat-cell *matCellDef="let row">
-                  <mat-icon aria-label="image" (click)="ViewPdfFromID(row.ID,row.INVOICE_NAME)">image</mat-icon>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="Download">
-                <th mat-header-cell *matHeaderCellDef> Download</th>
-                <td mat-cell *matCellDef="let row">
-                  <mat-icon aria-label="file_download" (click)="DowloandPdfFromID(row.ID,row.INVOICE_NAME)">
-                    file_download
-                  </mat-icon>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="UnSignDocumentsColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: UnSignDocumentsColumns;">
-              </tr>
-            </table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100,500]"></mat-paginator>
-          </div>
-        </mat-card>
-      </div>
-      <!--Un Signed documnets part ends-->
-
-      <!--Rejected documnets part starts-->
-      <div class="content" fxLayout="column" *ngIf="tab6">
-
-        <mat-card class="m-12 p-8" style="border-radius: 10px" fxLayout="column">
-          <div class="h2 pl-12 pt-8 warningColor" fxFlex>REJECTED DOCUMENTS</div>
-          <mat-form-field class="pl-12" fxFlex>
-            <input matInput (keyup)="applyFilterRej($event.target.value)" placeholder="Search">
-          </mat-form-field>
-          <div class="mat-elevation-z8 m-4" fxFlex>
             <div style="overflow-x:auto;">
-              <table mat-table [dataSource]="RejectedDocumentsDataSource" matSort style="width:100%">
+              <table mat-table [dataSource]="UnSignDocumentsDataSource" matSort
+                [style.width]="AllUnSignedDocument.length?'1650px':'100%'">
 
                 <ng-container matColumnDef="DOCTYPE">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>DOCTYPE</th>
@@ -514,31 +414,135 @@
 
                 <ng-container matColumnDef="AUTHORITY1">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority1</th>
-                  <td mat-cell *matCellDef="let row"> {{row.AUTHORITY1}} </td>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY1)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="AUTHORITY2">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority2</th>
-                  <td mat-cell *matCellDef="let row"> {{row.AUTHORITY2}} </td>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY2)}} </td>
                 </ng-container>
                 <ng-container matColumnDef="AUTHORITY3">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority3</th>
-                  <td mat-cell *matCellDef="let row"> {{row.AUTHORITY3}} </td>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY3)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="AUTHORITY4">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority4</th>
-                  <td mat-cell *matCellDef="let row"> {{row.AUTHORITY4}} </td>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY4)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="AUTHORITY5">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority5</th>
-                  <td mat-cell *matCellDef="let row"> {{row.AUTHORITY5}} </td>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY5)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="AUTHORITY6">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority6</th>
-                  <td mat-cell *matCellDef="let row"> {{row.AUTHORITY6}} </td>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY6)}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="AUTOSIGNED">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> AutoSigned </th>
+                  <td mat-cell *matCellDef="let row"> {{row.AUTOSIGNED}} </td>
+                </ng-container>
+
+                <!-- <ng-container matColumnDef="SIGNED_ON">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> SIGNED_ON </th>
+                <td mat-cell *matCellDef="let row"> {{row.SIGNED_ON | date : 'dd-MM-yyyy hh:mm:ss a'}}</td>
+              </ng-container> -->
+
+                <ng-container matColumnDef="View">
+                  <th mat-header-cell *matHeaderCellDef> View </th>
+                  <td mat-cell *matCellDef="let row">
+                    <mat-icon aria-label="image" (click)="ViewPdfFromID(row.ID,row.INVOICE_NAME)">image</mat-icon>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Download">
+                  <th mat-header-cell *matHeaderCellDef> Download</th>
+                  <td mat-cell *matCellDef="let row">
+                    <mat-icon aria-label="file_download" (click)="DowloandPdfFromID(row.ID,row.INVOICE_NAME)">
+                      file_download
+                    </mat-icon>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="UnSignDocumentsColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: UnSignDocumentsColumns;">
+                </tr>
+              </table>
+            </div>
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100,500]"></mat-paginator>
+          </div>
+        </mat-card>
+      </div>
+      <!--Un Signed documnets part ends-->
+
+      <!--Rejected documnets part starts-->
+      <div class="content" fxLayout="column" *ngIf="tab6">
+
+        <mat-card class="m-12 p-8" style="border-radius: 10px" fxLayout="column">
+          <div class="h2 pl-12 pt-8 warningColor" fxFlex>REJECTED DOCUMENTS</div>
+          <mat-form-field class="pl-12" fxFlex>
+            <input matInput (keyup)="applyFilterRej($event.target.value)" placeholder="Search">
+          </mat-form-field>
+          <div class="mat-elevation-z8 m-4" fxFlex>
+            <div style="overflow-x:auto;">
+              <table mat-table [dataSource]="RejectedDocumentsDataSource" matSort
+                [style.width]="AllRejectedDocument.length?'1650px':'100%'">
+
+                <ng-container matColumnDef="DOCTYPE">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>DOCTYPE</th>
+                  <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="INV_NAME">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice No </th>
+                  <td mat-cell *matCellDef="let row"> {{row.INV_NAME}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="CONFIG1">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Config1 </th>
+                  <td mat-cell *matCellDef="let row"> {{row.CODE}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="CONFIG2">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Config2 </th>
+                  <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="CONFIG3">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Config3 </th>
+                  <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="AUTHORITY1">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority1</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY1)}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="AUTHORITY2">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority2</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY2)}} </td>
+                </ng-container>
+                <ng-container matColumnDef="AUTHORITY3">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority3</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY3)}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="AUTHORITY4">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority4</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY4)}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="AUTHORITY5">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority5</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY5)}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="AUTHORITY6">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority6</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY6)}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="REJECTED_BY">
@@ -591,79 +595,81 @@
             <input matInput (keyup)="applyFilterConfig($event.target.value)" placeholder="Search">
           </mat-form-field>
           <div class="mat-elevation-z8 m-4" fxFlex>
-            <table mat-table [dataSource]="ConfigurationsDataSource" matSort style="width:100%">
+            <div style="overflow-x:auto;">
+              <table mat-table [dataSource]="ConfigurationsDataSource" matSort
+                [style.width]="AllConfigurations.length?'1650px':'100%'">
 
-              <!-- <ng-container matColumnDef="DOCTYPE">
+                <!-- <ng-container matColumnDef="DOCTYPE">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc Type</th>
                 <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
               </ng-container> -->
 
-              <ng-container matColumnDef="CONFIG2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Config2</th>
-                <td mat-cell *matCellDef="let row"> {{row.CONFIG2}}</td>
-              </ng-container>
+                <ng-container matColumnDef="CONFIG2">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Config2</th>
+                  <td mat-cell *matCellDef="let row"> {{row.CONFIG2}}</td>
+                </ng-container>
 
-              <ng-container matColumnDef="DOCTYPE">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc Type</th>
-                <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
-              </ng-container>
+                <ng-container matColumnDef="DOCTYPE">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc Type</th>
+                  <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="CERT_NAME">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Certificate Name</th>
-                <td mat-cell *matCellDef="let row"> {{row.CERT_NAME}} </td>
-              </ng-container>
+                <ng-container matColumnDef="CERT_NAME">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Certificate Name</th>
+                  <td mat-cell *matCellDef="let row"> {{row.CERT_NAME}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="CONFIG1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Config1</th>
-                <td mat-cell *matCellDef="let row"> {{row.CONFIG1}} </td>
-              </ng-container>
+                <ng-container matColumnDef="CONFIG1">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Config1</th>
+                  <td mat-cell *matCellDef="let row"> {{row.CONFIG1}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="CONFIG3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Config3</th>
-                <td mat-cell *matCellDef="let row"> {{row.CONFIG3}} </td>
-              </ng-container>
+                <ng-container matColumnDef="CONFIG3">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Config3</th>
+                  <td mat-cell *matCellDef="let row"> {{row.CONFIG3}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="AUTHORITY1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority1</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY1}} </td>
-              </ng-container>
+                <ng-container matColumnDef="AUTHORITY1">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority1</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY1)}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="AUTHORITY2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority2</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY2}} </td>
-              </ng-container>
-              <ng-container matColumnDef="AUTHORITY3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority3</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY3}} </td>
-              </ng-container>
+                <ng-container matColumnDef="AUTHORITY2">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority2</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY2)}} </td>
+                </ng-container>
+                <ng-container matColumnDef="AUTHORITY3">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority3</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY3)}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="AUTHORITY4">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority4</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY4}} </td>
-              </ng-container>
+                <ng-container matColumnDef="AUTHORITY4">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority4</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY4)}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="AUTHORITY5">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority5</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY5}} </td>
-              </ng-container>
+                <ng-container matColumnDef="AUTHORITY5">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority5</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY5)}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="AUTHORITY6">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority6</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY6}} </td>
-              </ng-container>
+                <ng-container matColumnDef="AUTHORITY6">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority6</th>
+                  <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY6)}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="AUTOSIGN">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>AutoSign</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTOSIGN}} </td>
-              </ng-container>
+                <ng-container matColumnDef="AUTOSIGN">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>AutoSign</th>
+                  <td mat-cell *matCellDef="let row"> {{row.AUTOSIGN}} </td>
+                </ng-container>
 
 
-              <ng-container matColumnDef="CREATED_ON">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>CreatedOn</th>
-                <td mat-cell *matCellDef="let row"> {{row.CREATED_ON | date : 'dd-MM-yyyy hh:mm:ss a'}} </td>
-              </ng-container>
+                <ng-container matColumnDef="CREATED_ON">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>CreatedOn</th>
+                  <td mat-cell *matCellDef="let row"> {{row.CREATED_ON | date : 'dd-MM-yyyy hh:mm:ss a'}} </td>
+                </ng-container>
 
-              <!-- <ng-container matColumnDef="Edit">
+                <!-- <ng-container matColumnDef="Edit">
                 <th mat-header-cell *matHeaderCellDef> Edit </th>
                 <td mat-cell *matCellDef="let row" (click)="UpdateConfiguration(row)">
                   <mat-icon aria-label="image">edit</mat-icon>
@@ -677,11 +683,11 @@
                 </td>
               </ng-container> -->
 
-              <tr mat-header-row *matHeaderRowDef="ConfigurationsColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: ConfigurationsColumns;">
-              </tr>
-            </table>
-
+                <tr mat-header-row *matHeaderRowDef="ConfigurationsColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: ConfigurationsColumns;">
+                </tr>
+              </table>
+            </div>
             <mat-paginator #ConfigurationsPaginator [pageSizeOptions]="[5, 10, 25, 100,500]"></mat-paginator>
           </div>
         </mat-card>
@@ -700,7 +706,7 @@
           </mat-form-field>
 
           <div class="mat-elevation-z8 m-4" fxFlex>
-            <table mat-table [dataSource]="ExpiredCertificatesDataSource" matSort style="width:100%">
+            <table mat-table [dataSource]="ExpiredCertificatesDataSource" matSort style="width:1650px">
 
               <ng-container matColumnDef="DOCTYPE">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Doc Type</th>
@@ -729,15 +735,15 @@
 
               <ng-container matColumnDef="AUTHORITY2">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority2</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY2}} </td>
+                <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY2)}} </td>
               </ng-container>
               <ng-container matColumnDef="AUTHORITY3">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority3</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY3}} </td>
+                <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY3)}} </td>
               </ng-container>
               <ng-container matColumnDef="AUTHORITY1">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Authority1</th>
-                <td mat-cell *matCellDef="let row"> {{row.AUTHORITY1}} </td>
+                <td mat-cell *matCellDef="let row"> {{GetUserNameBySSO(row.AUTHORITY1)}} </td>
               </ng-container>
 
               <ng-container matColumnDef="AUTOSIGN">
@@ -772,63 +778,66 @@
           </mat-form-field>
 
           <div class="mat-elevation-z8 m-4" fxFlex>
-            <table mat-table [dataSource]="ErrorDocumentsDataSource" matSort style="width:100%">
+            <div style="overflow-x:auto;">
+              <table mat-table [dataSource]="ErrorDocumentsDataSource" matSort
+                [style.width]="AllErrorDocuments.length?'1650px':'100%'">
 
-              <ng-container matColumnDef="DOCTYPE">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>DOCTYPE</th>
-                <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
-              </ng-container>
+                <ng-container matColumnDef="DOCTYPE">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>DOCTYPE</th>
+                  <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="INV_NAME">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice No </th>
-                <td mat-cell *matCellDef="let row"> {{row.INV_NAME}} </td>
-              </ng-container>
+                <ng-container matColumnDef="INV_NAME">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Invoice No </th>
+                  <td mat-cell *matCellDef="let row"> {{row.INV_NAME}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="CONFIG1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Config1 </th>
-                <td mat-cell *matCellDef="let row"> {{row.CODE}} </td>
-              </ng-container>
+                <ng-container matColumnDef="CONFIG1">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Config1 </th>
+                  <td mat-cell *matCellDef="let row"> {{row.CODE}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="CONFIG2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Config2 </th>
-                <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
-              </ng-container>
+                <ng-container matColumnDef="CONFIG2">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Config2 </th>
+                  <td mat-cell *matCellDef="let row"> {{row.DOCTYPE}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="CONFIG3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Config3 </th>
-                <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
-              </ng-container>
+                <ng-container matColumnDef="CONFIG3">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Config3 </th>
+                  <td mat-cell *matCellDef="let row"> {{row.AREA}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="CREATED_ON">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Created On </th>
-                <td mat-cell *matCellDef="let row"> {{row.CREATED_ON | date : 'dd-MM-yyyy hh:mm:ss a'}} </td>
-              </ng-container>
+                <ng-container matColumnDef="CREATED_ON">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Created On </th>
+                  <td mat-cell *matCellDef="let row"> {{row.CREATED_ON | date : 'dd-MM-yyyy hh:mm:ss a'}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="Comment">
-                <th mat-header-cell *matHeaderCellDef> Comment </th>
-                <td mat-cell *matCellDef="let row"> {{row.COMMENT}} </td>
-              </ng-container>
+                <ng-container matColumnDef="Comment">
+                  <th mat-header-cell *matHeaderCellDef> Comment </th>
+                  <td mat-cell *matCellDef="let row"> {{row.COMMENT}} </td>
+                </ng-container>
 
-              <ng-container matColumnDef="View">
-                <th mat-header-cell *matHeaderCellDef> View </th>
-                <td mat-cell *matCellDef="let row">
-                  <mat-icon aria-label="image" (click)="ViewPdfFromID(row.ID,row.INVOICE_NAME)">image</mat-icon>
-                </td>
-              </ng-container>
+                <ng-container matColumnDef="View">
+                  <th mat-header-cell *matHeaderCellDef> View </th>
+                  <td mat-cell *matCellDef="let row">
+                    <mat-icon aria-label="image" (click)="ViewPdfFromID(row.ID,row.INVOICE_NAME)">image</mat-icon>
+                  </td>
+                </ng-container>
 
-              <ng-container matColumnDef="Download">
-                <th mat-header-cell *matHeaderCellDef> Download</th>
-                <td mat-cell *matCellDef="let row">
-                  <mat-icon aria-label="file_download" (click)="DowloandPdfFromID(row.ID,row.INVOICE_NAME)">
-                    file_download
-                  </mat-icon>
-                </td>
-              </ng-container>
+                <ng-container matColumnDef="Download">
+                  <th mat-header-cell *matHeaderCellDef> Download</th>
+                  <td mat-cell *matCellDef="let row">
+                    <mat-icon aria-label="file_download" (click)="DowloandPdfFromID(row.ID,row.INVOICE_NAME)">
+                      file_download
+                    </mat-icon>
+                  </td>
+                </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="ErrorDocumentsColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: ErrorDocumentsColumns;">
-              </tr>
-            </table>
+                <tr mat-header-row *matHeaderRowDef="ErrorDocumentsColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: ErrorDocumentsColumns;">
+                </tr>
+              </table>
+            </div>
             <mat-paginator [pageSizeOptions]="[5, 10, 25, 100,500]"></mat-paginator>
           </div>
         </mat-card>

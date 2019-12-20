@@ -20,7 +20,8 @@ import {
     OutputTypeView,
     DocumentOutputType,
     DocumentOutputTypeMapView,
-    UserPlantMapView
+    UserPlantMapView,
+    UserView
 } from 'app/models/master';
 import { AuthorityClass } from 'app/models/dss';
 
@@ -171,6 +172,10 @@ export class MasterService {
 
     GetAllUsers(): Observable<UserWithRole[] | string> {
         return this._httpClient.get<UserWithRole[]>(`${this.baseAddress}api/Master/GetAllUsers`).pipe(catchError(this.errorHandler));
+    }
+
+    GetAllUserViews(): Observable<UserView[] | string> {
+        return this._httpClient.get<UserView[]>(`${this.baseAddress}api/Master/GetAllUserViews`).pipe(catchError(this.errorHandler));
     }
 
     GetAllNormalUsers(): Observable<string[] | string> {

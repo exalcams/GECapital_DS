@@ -117,12 +117,12 @@ adminDashboard {
   }
   .titleClass {
     @extend .whiteFont;
-    @extend .vertCenter;
-    padding-left: 15%;
+    margin: 0px;
+    text-align: center;
   }
   .subTitleClass {
     @extend .titleClass;
-    border-left: 1px solid white;
+    // border-left: 1px solid white;
   }
   .cntr {
     text-align: center;
